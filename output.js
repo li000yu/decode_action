@@ -1,867 +1,2207 @@
-//Mon Dec 16 2024 14:00:25 GMT+0000 (Coordinated Universal Time)
+//Thu Jan 23 2025 11:47:17 GMT+0000 (Coordinated Universal Time)
 //Base:https://github.com/echo094/decode-js
 //Modify:https://github.com/smallfawn/decode_action
-/*
-口令转链接
-10 10 10 10 * jd_code2url.js
-nolan服务接口
- */
+/*电信营业厅 v6.02
 
-const $ = new Env("\u53E3\u4EE4\u8F6C\u94FE\u63A5");
-var eD6l46, eU4fEX, mH8G6OG, _wnIU7S, SySSOs, _yqkI4F, HvqMty, IiGSchH, YWPkZWu;
-const Fomrbn = ["length", 1, 2, 0, 8, 27, "i", "g", 163, "f", "d", 255, "b", "c", 181, "a", 174, "undefined", void 0, 200, 125, 63, 6, "fromCodePoint", 7, 12, "push", 188, 237, 91, "e", 8191, 88, 13, 14, 194, !1, 89, "h", 110, 9, 5, 4, 71, 3, 105, 54, 21, 204, 232, 10, 25, 148, 29, 132, 197, 32, 79, 186, 192, 234, 180, 221, 126, 127, 128, 247, 80, 223, 176, 56, 139, 140, 141, 144];
-tloA3pl(S6aS9X(zoAcGM), S6aS9X(Mm1ss75), S6aS9X(WwR_y8), S6aS9X(EhcNXJ));
-function S6aS9X(eD6l46, eU4fEX = Fomrbn[1]) {
-  Object.defineProperty(eD6l46, Fomrbn[0], {
-    value: eU4fEX,
-    configurable: Fomrbn[36]
-  });
-  return eD6l46;
+签到和完成部分金豆任务, 喂宠物
+7天,15天,28天连签抽奖, 宠物等级权益兑换
+
+自己设置电信的服务密码, 把 手机号#服务密码 填到变量里, 多账号换行或&或@隔开:
+export chinaTelecomAccount="138000000#111111"
+
+每天运行多次
+
+
+cron: 5 0,6,12,20 * * *
+const $ = new Env("电信营业厅并发");
+*/
+
+const _0x49dfef = _0x5370a4("\u7535\u4FE1\u8425\u4E1A\u5385"),
+  _0x8e0885 = require("got"),
+  _0x203c4a = require("path"),
+  {
+    exec: _0x3898d1
+  } = require("child_process"),
+  {
+    CookieJar: _0x4f58d7
+  } = require("tough-cookie"),
+  _0x5336b3 = require("fs"),
+  _0x5e650c = require("crypto-js"),
+  _0x22f09c = "chinaTelecom",
+  _0x1876a7 = /[\n\&\@]/,
+  _0x4aec53 = [_0x22f09c + "Account"],
+  _0x128624 = 30000,
+  _0x5a04a9 = 3;
+const _0x1736e2 = _0x22f09c + "Rpc",
+  _0x16d3ea = process.env[_0x1736e2],
+  _0xf4231c = 6.02,
+  _0x14f289 = "chinaTelecom",
+  _0x100b57 = "https://leafxcy.coding.net/api/user/leafxcy/project/validcode/shared-depot/validCode/git/blob/master/code.json",
+  _0x344953 = "JinDouMall";
+let _0x1d3d6d = {};
+const _0x5370da = "./chinaTelecom_cache.json",
+  _0x3ed712 = "Mozilla/5.0 (Linux; U; Android 12; zh-cn; ONEPLUS A9000 Build/QKQ1.190716.003) AppleWebKit/533.1 (KHTML, like Gecko) Version/5.0 Mobile Safari/533.1",
+  _0x75a069 = "34d7cb0bcdf07523",
+  _0x2304b1 = "1234567`90koiuyhgtfrdewsaqaqsqde",
+  _0x1110eb = "\0\0\0\0\0\0\0\0",
+  _0x3c561e = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBkLT15ThVgz6/NOl6s8GNPofdWzWbCkWnkaAm7O2LjkM1H7dMvzkiqdxU02jamGRHLX/ZNMCXHnPcW/sDhiFCBN18qFvy8g6VYb9QtroI09e176s+ZCtiv7hbin2cCTj99iUpnEloZm19lwHyo69u5UMiPMpq0/XKBO8lYhN/gwIDAQAB",
+  _0x1e9565 = "-----BEGIN PUBLIC KEY-----\n" + _0x3c561e + "\n-----END PUBLIC KEY-----",
+  _0x516f15 = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+ugG5A8cZ3FqUKDwM57GM4io6JGcStivT8UdGt67PEOihLZTw3P7371+N47PrmsCpnTRzbTgcupKtUv8ImZalYk65dU8rjC/ridwhw9ffW2LBwvkEnDkkKKRi2liWIItDftJVBiWOh17o6gfbPoNrWORcAdcbpk2L+udld5kZNwIDAQAB",
+  _0x4995b7 = "-----BEGIN PUBLIC KEY-----\n" + _0x516f15 + "\n-----END PUBLIC KEY-----",
+  _0x51cf70 = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIPOHtjs6p4sTlpFvrx+ESsYkEvyT4JB/dcEbU6C8+yclpcmWEvwZFymqlKQq89laSH4IxUsPJHKIOiYAMzNibhED1swzecH5XLKEAJclopJqoO95o8W63Euq6K+AKMzyZt1SEqtZ0mXsN8UPnuN/5aoB3kbPLYpfEwBbhto6yrwIDAQAB",
+  _0x2e5ddf = "-----BEGIN PUBLIC KEY-----\n" + _0x51cf70 + "\n-----END PUBLIC KEY-----",
+  _0xc38e90 = require("node-rsa");
+let _0x13a631 = new _0xc38e90(_0x1e9565);
+const _0x4386dc = {
+  encryptionScheme: "pkcs1"
+};
+_0x13a631.setOptions(_0x4386dc);
+let _0x47bb4b = new _0xc38e90(_0x4995b7);
+const _0xe2cacf = {
+  encryptionScheme: "pkcs1"
+};
+_0x47bb4b.setOptions(_0xe2cacf);
+let _0x5b4189 = new _0xc38e90(_0x2e5ddf);
+const _0x3ab892 = {
+  encryptionScheme: "pkcs1"
+};
+_0x5b4189.setOptions(_0x3ab892);
+const _0x131d2d = [202201, 202202, 202203],
+  _0x3c685e = 5;
+function _0x1519a6(_0xa8ae5c, _0x459aac, _0x58d61f, _0xa81bc3, _0x5af061, _0x3eaf32) {
+  return _0x5e650c[_0xa8ae5c].encrypt(_0x5e650c.enc.Utf8.parse(_0xa81bc3), _0x5e650c.enc.Utf8.parse(_0x5af061), {
+    mode: _0x5e650c.mode[_0x459aac],
+    padding: _0x5e650c.pad[_0x58d61f],
+    iv: _0x5e650c.enc.Utf8.parse(_0x3eaf32)
+  }).ciphertext.toString(_0x5e650c.enc.Hex);
 }
-function EhcNXJ(...eD6l46) {
-  tloA3pl(eD6l46[Fomrbn[0]] = Fomrbn[1], eD6l46[Fomrbn[1]] = "ubCGKiFTqserIHQpcx_[U~j#vm:ED{J<ky+gdz&2(1`YOM)nXaA^75;S$w%NLPlfR|9=]>\"W4t}?,@oh/6B*ZV.308!", eD6l46[Fomrbn[2]] = "" + (eD6l46[Fomrbn[3]] || ""), eD6l46[Fomrbn[5]] = eD6l46[Fomrbn[2]].length, eD6l46[Fomrbn[10]] = [], eD6l46[Fomrbn[8]] = Fomrbn[3], eD6l46[Fomrbn[9]] = Fomrbn[3], eD6l46[Fomrbn[7]] = -Fomrbn[1]);
-  for (eD6l46[Fomrbn[4]] = Fomrbn[3]; eD6l46[Fomrbn[4]] < eD6l46[Fomrbn[5]]; eD6l46[Fomrbn[4]]++) {
-    eD6l46[Fomrbn[6]] = eD6l46[Fomrbn[1]].indexOf(eD6l46[Fomrbn[2]][eD6l46[Fomrbn[4]]]);
-    if (eD6l46[Fomrbn[6]] === -Fomrbn[1]) continue;
-    if (eD6l46[Fomrbn[7]] < Fomrbn[3]) {
-      eD6l46[Fomrbn[7]] = eD6l46[Fomrbn[6]];
-    } else {
-      tloA3pl(eD6l46[Fomrbn[7]] += eD6l46[Fomrbn[6]] * Fomrbn[29], eD6l46[Fomrbn[8]] |= eD6l46[Fomrbn[7]] << eD6l46[Fomrbn[9]], eD6l46[Fomrbn[9]] += (eD6l46[Fomrbn[7]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-      do {
-        tloA3pl(eD6l46[Fomrbn[10]].push(eD6l46[Fomrbn[8]] & Fomrbn[11]), eD6l46[Fomrbn[8]] >>= Fomrbn[4], eD6l46[Fomrbn[9]] -= Fomrbn[4]);
-      } while (eD6l46[Fomrbn[9]] > Fomrbn[24]);
-      eD6l46[Fomrbn[7]] = -Fomrbn[1];
-    }
-  }
-  if (eD6l46[Fomrbn[7]] > -Fomrbn[1]) {
-    eD6l46[Fomrbn[10]].push((eD6l46[Fomrbn[8]] | eD6l46[Fomrbn[7]] << eD6l46[Fomrbn[9]]) & Fomrbn[11]);
-  }
-  return Mm1ss75(eD6l46[Fomrbn[10]]);
+function _0x436a1e(_0x5007ed, _0x18814d, _0x38ebb6, _0x4281ff, _0x1bafc9, _0x3aac70) {
+  return _0x5e650c[_0x5007ed].decrypt({
+    ciphertext: _0x5e650c.enc.Hex.parse(_0x4281ff)
+  }, _0x5e650c.enc.Utf8.parse(_0x1bafc9), {
+    mode: _0x5e650c.mode[_0x18814d],
+    padding: _0x5e650c.pad[_0x38ebb6],
+    iv: _0x5e650c.enc.Utf8.parse(_0x3aac70)
+  }).toString(_0x5e650c.enc.Utf8);
 }
-function WwR_y8(...mH8G6OG) {
-  mH8G6OG[Fomrbn[0]] = Fomrbn[1];
-  if (typeof eD6l46[mH8G6OG[Fomrbn[3]]] === Fomrbn[17]) {
-    return eD6l46[mH8G6OG[Fomrbn[3]]] = EhcNXJ(eU4fEX[mH8G6OG[Fomrbn[3]]]);
-  }
-  return eD6l46[mH8G6OG[Fomrbn[3]]];
-}
-tloA3pl(eD6l46 = {}, eU4fEX = ["Xw&TG}*btUlric@[hr6FZ&=HNUUHez<J3\"aE1?^Ti;EX{c^1cW.s", "*F4tR4Uq+fh)#Qf`isx?nfy1usU>mczv9]z}U*MHMq", "r}.7oXZ+0xfD]pJ{r_^5.Ajd%rZmy4E`%Gr{^$5{T", "Ca),Sh;%v%&,ZXv+EsF7Y$xb", "JsF<#VQ)afu?/d=m}]Q<j", ">^~K{n\".txA/jiuYj|YksSf1pLkQ@X!c)lb", "=;ek$2Yg#H3}pW+vJI,}@X3b", "(:FT?6Eg<9TEc*\"mX+sJ7)Mg%r,Kh:c+uL0a|XdC", "cWU{8y:vcp(,$*%d", "orE4P5+}BL`GuGt[.UWtl2{THN8\"MP>zPxL5@SG50Hkhbmf#xf1JI", "o^fD[6=1^[?rKGRJA(;7^$t?gwD,3Gv{<LUTn@/vhq7D[BYmw:K}mte7T", "Up.<V7x6Lq/dd*_Dw;eE`zC\"0U(NIp.(4F=5&tu", "iIF7c&@TO|q|omTzi:rk2zk_+Ic?D*S{", "gF$ago]_Z;cGZn*EGwm^=5C%xs+NUW:{[w^{qS`C", "cW.sidn1+pPfTBK<{p1^7z(/j%XtW&w#Nz=qP@T5_;{S?&vDw;VK", "?MBq@A47p9n>amKJ?`8F/li1k_", "`W>W:&wHK;0\"qpJgD}AE?XlC4HZ\"dXK&dWd<S5iHrQz,b", "lGRay;&vqeCz=Q_+#|.aJnEgasnxJP31xL.W2?v7i[\"p{XPdcb", "/|ekP%j)BfU%Cmc2p(a^XBG1ie$,hpE{v](^iXu", "B+zTEw\"IXsIBsdIUaUh,p&cC0H", "s)l<iXz?M~~zpB%{", "b_!^<o_qIxI]&%RdO:fa3NR%N|QSpBO[ltA4Y$E1)9V_~cz<i]+k1P,I.RD", ".`6FN5TTeN,pN\"T&/<L}BM5{G[_E1KP#NUSs", "M|[}^%.(awp?aaWm>]DTP5!lF%B=)m1<N:>T", "T}<7_*ngT%bJCP2z6N&SC56g}lB\"%Hi_9]b", "|zA4S)B+][UGdn%d.QS7G5yTAsJH)m0gqY)7Y?R%^wJ>*C", "m}AqtSP#G", "7FhKg(FddwJ%9z1mgGd}5%1b?q2XS&CvJzWtWARFB;*L/n}&t]s?&ahb", "\"sK}=)>#_Ld,zP(&@|yF2;kdnf|gEQ!DR<}q", "M:@<Ygyf~[9tA&=JTWI{ZM~gf_;", "&X|^ewF`H92gIGC#ds#s3o{TJ_/\"BC2v#WP}X\"q%@q)KEQ_U*^<,|XVwqeg", "MlFsUARF/5k4pWZDmkY4swu", "k{Z:{(u", "h<}^v*N#O|`Nb", "+;x?X^l_Z;nQ%6v+=#t^\"S\"}@rr?@v?mGaSFiSW?F%A", "U^]<&;ag6fr]hW`&$;xkY?a[,r0baLI", "@N\"aFAU)yId", "gp;T&(|^9I!:96<J(lqy!7>?>[", "yG*k`BFqb;3bhC=zF]kJuS3b/pvGrC/Ej]fK@}YTV;;", "\"tzSR%\"_8Q6$S\"Sg@$AE/SG[+sD+M4R#/$!@zzd7U[nxzK", "U)mJ{(I)NN,}cnb#}lSt@}vC7[|Qbc0jiW|^GS+J.HYSRpbJr:`^~>0(}Nd", "\"Xqoi4FJaL!q\"6dJxwH,{n[TkfW/sdO2_WUS,*Z.}U", "w^QS#>?HmxrJ/Gx:om[{N5q\"awy+{K+<iY<Dz$<gwQU^eibJg}C", "M<vJ!7^?{~v", "Cst^+own?xpxVvPxj)C", "[w`kcl:7zH$KHcq[];Ak?}`_orm", "zY7{*W+JNN0@b", "NG;<3Mhw*s1TH4k_X:fKl}#Tc9E", "j(vtz((7a_I%IET_2IaFm7u", "^^Me+Vr[/pKPdn(:otvJnPiHJ__^SQ^Dps&K8n#5Qfzt*Gr", "W<}q`/ov[sp?Va*E.QN5afGfV[Kz7p%`eYO}U7)JJ9@dTAv`Hb", "/rRarXIvL5+4G2m{Ds6^L%5HG[JTPL9zKLbJjw{wNlY//pD#", "_Ll,/,5#K", "kIC4vo!I{_=NAms&/+1F=}+RkL$DsdX+[IeE`BlJP_!m.6nEKaG", "dw]@(f9_V[I]F&A(pk(J0nu", "}F4tO])C)rh5_6>v`zsF{*u", "]s5Su44J_;<4g%T<8Q27`$VHcp0\"/WJ`", "kpT7^B_)];5mdWM[N+FSj7VhMrK?4X=mzXtk5Zu", "b;#D.Wm1lr4f2C", "dL3;~*mTG", "fF?k@}u", "4QjScl|?5[Zm14JJ9s%ka$MfDltg>dI:7w^@t,~1s|,rE&4:0+{<t>ZIG", "DYs?ZAT1fILK\"a.jC;6q_,LC_wJS5K", "8ldTidpbB[l9Amn2bL,<H6u", "@Fx;\"d*gieo$/*9x*G6^{", "{|`{%@)7)pA_W&q", "8DZ@F6A_OQL/VLE{A^MKU(NVtx", "MlG}{PX.F", "#(]}1a6b", "m|haxSV>bsE+9>1[QYAE4AIR}l(te:.()|b", "AGiew^e7_fBjb", "dG\"Si5:J0UAtWNPdO+Yk:", "7+de}>P1GwMKlzivDzQS0WvC", ".Q/sL5V#gI/pJazmfGLeW+*{W%Rf\">ldQIZiVAL%G;7,yc=xRF9kj", "xkAqdgifEN{Tid|<Ufkt}6HH2HuWv4P#TY<KmW?>[wd,{zV1#WY{F+pb", ":|#a=4A7gs", "*msJ5BT5@Q2lBaADhF\"WkN$(@_hf(EI[,<mFR+C\"K;Eh6vgJ7F1;{", "~w@Tvw0+*[vHbXH", "y][eV>9FPq6krB4:v;bE_&2[^syhDK[DlG9q#VI7cw~>b", "&l:^[6u", "7IGk~N6g8xWgiZo:U)x^1tPgG", "Dp_k!&j)3H?}pC)EGI?5uhYTRsA$0pKxWF,AyNvd]R(gcG]&+;b", "jI:^\"}Lvj%(t=*GY.Qbo3wud|LcJFP!`hF6^w2_qJp*fXp*+!xiS?X@wT", "8q5SSfFdCL,/zH&[Y<SatL)%YxF^SB0D=u", "D;oTFhxTI|7v*C!1", "OUJDy;>>wxj+YQ#(7Wo<67qv=[4@oQq[7;~T", "pp)<N@UCe|r]3:.(Jb", "#pU@o6:C", "DnxII*P", "aN9&KW4#O9IMVvO", "M(ze", "vs0F|Xu", "=;i^&`o", "o=q3wYHz/qH+M`HK@1hC<*f6_9=i>IrmPO=60\"*m5Ad~hdJ7#!z6", "5}aF", "7N^(#0?(/g`c!?IZ@DtsPvz>gQ.?9;pBAR7<e!*y9`kXZ_zq", "BG]@ztu", "gYqs", "J9C?G", ".e^d})Sw5R2]DYUD16X{3C", "(:[kU,b5T", "0^Kt~", "ULQ!cfSd][", "R1v*}zSSt", ".W(Nu", "|/rci{<4*yV{;q", ":Jesb", "3J}ZSzHdR", "ZN|cUni[k=#~FaE", "<mnN", "]j#sN;I)R&|^D^bVME!fSzh8I&4^,f)wbW2GJB[0lrsUZM<wc/[cnKZjz9@=qW.L5Wg*ufHx", "[JmGufT[R", "pN}:q(>C", "R1?NlBFR/~6A9+S]o/$Nj}6SJ#{A)YXLYw@WjbDjC", "pN}:q(=UpEHY@YP]@gW", "QB4NX:[XU&;6|Y_T1`B|p", "pN}:q(=Uv^#~Fa4L3JW", "*X1fj*x", ")o$Ncf<4`R^?3_E", "R1?NlBFR/~6A9+Xo3~Oz,:^8r~0=yDEM\"wXHjKA4t", "T!<e5:BwU&{FO", "JcVN@0z8`GV%~%|&>HSN)Hy%t$21zYgwY|:Hl+/lu~6A9+|&)I1YeL>Ey~o6V+Ng^\"1Yj;x", "S$+29", "lcTNP@ED", "66c}%v1", "a*_<J", "BH3?", "1Yf!esj6*R#", "W}b4s", "(7`)9Ef", "1LV~2AE:@bCtk9*", "b(I<uTLVV\"", ";iO@H)}n*R#", "]$i?3$1Yz", "NeUG", "03%o~|6@r?^", "mC:8KF`W", "WQ{T", "un]GD4[Mk", "un9#", "CKAb*", "ccYt5sA", ".OK!Jp=8rQ1Z*(!`6J4k", "lx&B$VV6EZ6%;*>MvXec", "/,@5`", ">!.(", "ccU#SE?7!", "ccU#", "U5IVP\"A", "D+=bNs:`Vy??:", ",,@ku=ki<C", "dLZJI\"z:"]);
-function CLbGOv(...eD6l46) {
-  tloA3pl(eD6l46[Fomrbn[0]] = Fomrbn[3], eD6l46[Fomrbn[15]] = [function () {
-    return globalThis;
-  }, function () {
-    return global;
-  }, function () {
-    return window;
-  }, function () {
-    return new Function("return this")();
-  }], eD6l46[Fomrbn[12]] = Fomrbn[18], eD6l46[Fomrbn[13]] = []);
+function _0x4e4355() {
   try {
-    tloA3pl(eD6l46[Fomrbn[12]] = Object, eD6l46[Fomrbn[13]][Fomrbn[26]]("".__proto__.constructor.name));
-  } catch (eU4fEX) {}
-  HGoD2Dj: for (eD6l46[Fomrbn[14]] = Fomrbn[3]; eD6l46[Fomrbn[14]] < eD6l46[Fomrbn[15]][Fomrbn[0]]; eD6l46[Fomrbn[14]]++) try {
-    eD6l46[Fomrbn[12]] = eD6l46[Fomrbn[15]][eD6l46[Fomrbn[14]]]();
-    for (eD6l46[-Fomrbn[16]] = Fomrbn[3]; eD6l46[-Fomrbn[16]] < eD6l46[Fomrbn[13]][Fomrbn[0]]; eD6l46[-Fomrbn[16]]++) if (typeof eD6l46[Fomrbn[12]][eD6l46[Fomrbn[13]][eD6l46[-Fomrbn[16]]]] === Fomrbn[17]) continue HGoD2Dj;
-    return eD6l46[Fomrbn[12]];
-  } catch (eU4fEX) {}
-  return eD6l46[Fomrbn[12]] || this;
+    _0x5336b3.writeFileSync(_0x5370da, JSON.stringify(_0x1d3d6d, null, 4), "utf-8");
+  } catch (_0x1c3791) {
+    console.log("\u4FDD\u5B58\u7F13\u5B58\u51FA\u9519");
+  }
 }
-tloA3pl(mH8G6OG = CLbGOv() || {}, _wnIU7S = mH8G6OG.TextDecoder, SySSOs = mH8G6OG.Uint8Array, _yqkI4F = mH8G6OG.Buffer, HvqMty = mH8G6OG.String || String, IiGSchH = mH8G6OG.Array || Array, YWPkZWu = function (...eD6l46) {
-  tloA3pl(eD6l46[Fomrbn[0]] = Fomrbn[3], eD6l46[Fomrbn[12]] = new IiGSchH(Fomrbn[65]), eD6l46[Fomrbn[1]] = HvqMty[Fomrbn[23]] || HvqMty.fromCharCode, eD6l46[Fomrbn[2]] = []);
-  return S6aS9X(function (...eU4fEX) {
-    tloA3pl(eU4fEX[Fomrbn[0]] = Fomrbn[1], eU4fEX[Fomrbn[20]] = Fomrbn[18], eU4fEX[Fomrbn[12]] = Fomrbn[18], eU4fEX[Fomrbn[13]] = eU4fEX[Fomrbn[3]][Fomrbn[0]], eD6l46[Fomrbn[2]][Fomrbn[0]] = Fomrbn[3]);
-    for (eU4fEX[Fomrbn[19]] = Fomrbn[3]; eU4fEX[Fomrbn[19]] < eU4fEX[Fomrbn[13]];) {
-      tloA3pl(eU4fEX[Fomrbn[12]] = eU4fEX[Fomrbn[3]][eU4fEX[Fomrbn[19]]++], eU4fEX[Fomrbn[12]] <= Fomrbn[64] ? eU4fEX[Fomrbn[20]] = eU4fEX[Fomrbn[12]] : eU4fEX[Fomrbn[12]] <= Fomrbn[68] ? eU4fEX[Fomrbn[20]] = (eU4fEX[Fomrbn[12]] & 31) << Fomrbn[22] | eU4fEX[Fomrbn[3]][eU4fEX[Fomrbn[19]]++] & Fomrbn[21] : eU4fEX[Fomrbn[12]] <= 239 ? eU4fEX[Fomrbn[20]] = (eU4fEX[Fomrbn[12]] & 15) << Fomrbn[25] | (eU4fEX[Fomrbn[3]][eU4fEX[Fomrbn[19]]++] & Fomrbn[21]) << Fomrbn[22] | eU4fEX[Fomrbn[3]][eU4fEX[Fomrbn[19]]++] & Fomrbn[21] : HvqMty[Fomrbn[23]] ? eU4fEX[Fomrbn[20]] = (eU4fEX[Fomrbn[12]] & Fomrbn[24]) << 18 | (eU4fEX[Fomrbn[3]][eU4fEX[Fomrbn[19]]++] & Fomrbn[21]) << Fomrbn[25] | (eU4fEX[Fomrbn[3]][eU4fEX[Fomrbn[19]]++] & Fomrbn[21]) << Fomrbn[22] | eU4fEX[Fomrbn[3]][eU4fEX[Fomrbn[19]]++] & Fomrbn[21] : (eU4fEX[Fomrbn[20]] = Fomrbn[21], eU4fEX[Fomrbn[19]] += Fomrbn[44]), eD6l46[Fomrbn[2]][Fomrbn[26]](eD6l46[Fomrbn[12]][eU4fEX[Fomrbn[20]]] || (eD6l46[Fomrbn[12]][eU4fEX[Fomrbn[20]]] = eD6l46[Fomrbn[1]](eU4fEX[Fomrbn[20]]))));
-    }
-    return eD6l46[Fomrbn[2]].join("");
+function _0xa0ff1b() {
+  try {
+    _0x1d3d6d = JSON.parse(_0x5336b3.readFileSync(_0x5370da, "utf-8"));
+  } catch (_0x125821) {
+    console.log("\u8BFB\u53D6\u7F13\u5B58\u51FA\u9519, \u65B0\u5EFA\u4E00\u4E2Atoken\u7F13\u5B58");
+    _0x4e4355();
+  }
+}
+let _0x300c8e = 0,
+  _0xdb6efe = 0;
+function _0x11cae0() {
+  _0xdb6efe = 1;
+  process.on("SIGTERM", () => {
+    _0xdb6efe = 2;
+    process.exit(0);
   });
-}());
-function Mm1ss75(...eD6l46) {
-  eD6l46[Fomrbn[0]] = Fomrbn[1];
-  return typeof _wnIU7S !== Fomrbn[17] && _wnIU7S ? new _wnIU7S().decode(new SySSOs(eD6l46[Fomrbn[3]])) : typeof _yqkI4F !== Fomrbn[17] && _yqkI4F ? _yqkI4F.from(eD6l46[Fomrbn[3]]).toString("utf-8") : YWPkZWu(eD6l46[Fomrbn[3]]);
+  const _0x377b8a = _0x203c4a.basename(process.argv[1]),
+    _0x39bc5b = ["bash", "timeout", "grep"];
+  let _0x4fe84e = ["ps afx"];
+  _0x4fe84e.push("grep " + _0x377b8a);
+  _0x4fe84e = _0x4fe84e.concat(_0x39bc5b.map(_0x425dac => "grep -v \"" + _0x425dac + " \""));
+  _0x4fe84e.push("wc -l");
+  const _0x401932 = _0x4fe84e.join("|"),
+    _0x134226 = () => {
+      _0x3898d1(_0x401932, (_0x26b41f, _0x817890, _0x4eca1a) => {
+        if (_0x26b41f || _0x4eca1a) {
+          return;
+        }
+        _0x300c8e = parseInt(_0x817890.trim(), 10);
+      });
+      if (_0xdb6efe == 1) {
+        setTimeout(_0x134226, 2000);
+      }
+    };
+  _0x134226();
 }
-function wxqKflw(mH8G6OG, _wnIU7S = Fomrbn[1]) {
-  tloA3pl(S6aS9X(_yqkI4F), S6aS9X(SySSOs));
-  function SySSOs(...mH8G6OG) {
-    tloA3pl(mH8G6OG[Fomrbn[0]] = Fomrbn[1], mH8G6OG[Fomrbn[1]] = "PgVxnBSsLmDKOcZAJrFeldbXYCaRj_#zI@}?4iu/h61N\"=~%MQf.0+&!yT{[)vG539<Ew>t*`pWHkU:2qo$(^|78,;]", mH8G6OG[-Fomrbn[27]] = "" + (mH8G6OG[Fomrbn[3]] || ""), mH8G6OG[Fomrbn[13]] = mH8G6OG[-Fomrbn[27]].length, mH8G6OG[-Fomrbn[35]] = [], mH8G6OG[Fomrbn[30]] = Fomrbn[3], mH8G6OG[Fomrbn[22]] = Fomrbn[3], mH8G6OG[Fomrbn[7]] = -Fomrbn[1]);
-    for (mH8G6OG[Fomrbn[4]] = Fomrbn[3]; mH8G6OG[Fomrbn[4]] < mH8G6OG[Fomrbn[13]]; mH8G6OG[Fomrbn[4]]++) {
-      mH8G6OG[Fomrbn[28]] = mH8G6OG[Fomrbn[1]].indexOf(mH8G6OG[-Fomrbn[27]][mH8G6OG[Fomrbn[4]]]);
-      if (mH8G6OG[Fomrbn[28]] === -Fomrbn[1]) continue;
-      if (mH8G6OG[Fomrbn[7]] < Fomrbn[3]) {
-        mH8G6OG[Fomrbn[7]] = mH8G6OG[Fomrbn[28]];
-      } else {
-        tloA3pl(mH8G6OG[Fomrbn[7]] += mH8G6OG[Fomrbn[28]] * Fomrbn[29], mH8G6OG[Fomrbn[30]] |= mH8G6OG[Fomrbn[7]] << mH8G6OG[Fomrbn[22]], mH8G6OG[Fomrbn[22]] += (mH8G6OG[Fomrbn[7]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-        do {
-          tloA3pl(mH8G6OG[-Fomrbn[35]].push(mH8G6OG[Fomrbn[30]] & Fomrbn[11]), mH8G6OG[Fomrbn[30]] >>= Fomrbn[4], mH8G6OG[Fomrbn[22]] -= Fomrbn[4]);
-        } while (mH8G6OG[Fomrbn[22]] > Fomrbn[24]);
-        mH8G6OG[Fomrbn[7]] = -Fomrbn[1];
-      }
-    }
-    if (mH8G6OG[Fomrbn[7]] > -Fomrbn[1]) {
-      mH8G6OG[-Fomrbn[35]].push((mH8G6OG[Fomrbn[30]] | mH8G6OG[Fomrbn[7]] << mH8G6OG[Fomrbn[22]]) & Fomrbn[11]);
-    }
-    return Mm1ss75(mH8G6OG[-Fomrbn[35]]);
-  }
-  function _yqkI4F(...mH8G6OG) {
-    mH8G6OG[Fomrbn[0]] = Fomrbn[1];
-    if (typeof eD6l46[mH8G6OG[Fomrbn[3]]] === Fomrbn[17]) {
-      return eD6l46[mH8G6OG[Fomrbn[3]]] = SySSOs(eU4fEX[mH8G6OG[Fomrbn[3]]]);
-    }
-    return eD6l46[mH8G6OG[Fomrbn[3]]];
-  }
-  Object[WwR_y8(86)](mH8G6OG, WwR_y8(87), {
-    [_yqkI4F(Fomrbn[32])]: _wnIU7S,
-    [_yqkI4F(Fomrbn[37])]: Fomrbn[36]
-  });
-  return mH8G6OG;
-}
-const zC379rl = require("./function/dylanx.js"),
-  __drHm = require("crypto-js");
-let YqUtwpv = process[WwR_y8(90)][WwR_y8(Fomrbn[29])] || "";
-!(async () => {
-  if (YqUtwpv) {
-    tloA3pl(S6aS9X(_wnIU7S), S6aS9X(mH8G6OG));
-    function mH8G6OG(...mH8G6OG) {
-      tloA3pl(mH8G6OG[Fomrbn[0]] = Fomrbn[1], mH8G6OG[Fomrbn[1]] = "o=EN;Sa964R!KIDGLz.MU>01sOYZf8C*m:Xxp&BVen,gt7~h@wqATQ?dJ5}b%#y{HWFji|lrP`2k/^\"(v$]<u+[_3)c", mH8G6OG[-Fomrbn[37]] = "" + (mH8G6OG[Fomrbn[3]] || ""), mH8G6OG[-Fomrbn[39]] = mH8G6OG[-Fomrbn[37]].length, mH8G6OG[Fomrbn[42]] = [], mH8G6OG[Fomrbn[41]] = Fomrbn[3], mH8G6OG[Fomrbn[9]] = Fomrbn[3], mH8G6OG[Fomrbn[7]] = -Fomrbn[1]);
-      for (mH8G6OG[Fomrbn[38]] = Fomrbn[3]; mH8G6OG[Fomrbn[38]] < mH8G6OG[-Fomrbn[39]]; mH8G6OG[Fomrbn[38]]++) {
-        mH8G6OG[Fomrbn[40]] = mH8G6OG[Fomrbn[1]].indexOf(mH8G6OG[-Fomrbn[37]][mH8G6OG[Fomrbn[38]]]);
-        if (mH8G6OG[Fomrbn[40]] === -Fomrbn[1]) continue;
-        if (mH8G6OG[Fomrbn[7]] < Fomrbn[3]) {
-          mH8G6OG[Fomrbn[7]] = mH8G6OG[Fomrbn[40]];
-        } else {
-          tloA3pl(mH8G6OG[Fomrbn[7]] += mH8G6OG[Fomrbn[40]] * Fomrbn[29], mH8G6OG[Fomrbn[41]] |= mH8G6OG[Fomrbn[7]] << mH8G6OG[Fomrbn[9]], mH8G6OG[Fomrbn[9]] += (mH8G6OG[Fomrbn[7]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-          do {
-            tloA3pl(mH8G6OG[Fomrbn[42]].push(mH8G6OG[Fomrbn[41]] & Fomrbn[11]), mH8G6OG[Fomrbn[41]] >>= Fomrbn[4], mH8G6OG[Fomrbn[9]] -= Fomrbn[4]);
-          } while (mH8G6OG[Fomrbn[9]] > Fomrbn[24]);
-          mH8G6OG[Fomrbn[7]] = -Fomrbn[1];
-        }
-      }
-      if (mH8G6OG[Fomrbn[7]] > -Fomrbn[1]) {
-        mH8G6OG[Fomrbn[42]].push((mH8G6OG[Fomrbn[41]] | mH8G6OG[Fomrbn[7]] << mH8G6OG[Fomrbn[9]]) & Fomrbn[11]);
-      }
-      return Mm1ss75(mH8G6OG[Fomrbn[42]]);
-    }
-    function _wnIU7S(..._wnIU7S) {
-      _wnIU7S[Fomrbn[0]] = Fomrbn[1];
-      if (typeof eD6l46[_wnIU7S[Fomrbn[3]]] === Fomrbn[17]) {
-        return eD6l46[_wnIU7S[Fomrbn[3]]] = mH8G6OG(eU4fEX[_wnIU7S[Fomrbn[3]]]);
-      }
-      return eD6l46[_wnIU7S[Fomrbn[3]]];
-    }
-    let SySSOs = YqUtwpv[_wnIU7S(92)](new RegExp(_wnIU7S(93), ""));
-    SySSOs && (await HYs0PJr(SySSOs[Fomrbn[3]]));
-  } else {
-    tloA3pl(S6aS9X(HvqMty), S6aS9X(_yqkI4F));
-    function _yqkI4F(...mH8G6OG) {
-      tloA3pl(mH8G6OG[Fomrbn[0]] = Fomrbn[1], mH8G6OG[Fomrbn[15]] = "|AEUXTPhaFRslijmCrSDIJNHq!uQvY6~zf\"5t>{@,x1}=ZG3_+V;nw2?7k#.[%8opc]`/$4*y09eW:MKBL(&bg)<O^d", mH8G6OG[Fomrbn[12]] = "" + (mH8G6OG[Fomrbn[3]] || ""), mH8G6OG[Fomrbn[13]] = mH8G6OG[Fomrbn[12]].length, mH8G6OG[-Fomrbn[43]] = [], mH8G6OG[Fomrbn[19]] = Fomrbn[3], mH8G6OG[Fomrbn[22]] = Fomrbn[3], mH8G6OG[Fomrbn[24]] = -Fomrbn[1]);
-      for (mH8G6OG[Fomrbn[38]] = Fomrbn[3]; mH8G6OG[Fomrbn[38]] < mH8G6OG[Fomrbn[13]]; mH8G6OG[Fomrbn[38]]++) {
-        mH8G6OG[Fomrbn[40]] = mH8G6OG[Fomrbn[15]].indexOf(mH8G6OG[Fomrbn[12]][mH8G6OG[Fomrbn[38]]]);
-        if (mH8G6OG[Fomrbn[40]] === -Fomrbn[1]) continue;
-        if (mH8G6OG[Fomrbn[24]] < Fomrbn[3]) {
-          mH8G6OG[Fomrbn[24]] = mH8G6OG[Fomrbn[40]];
-        } else {
-          tloA3pl(mH8G6OG[Fomrbn[24]] += mH8G6OG[Fomrbn[40]] * Fomrbn[29], mH8G6OG[Fomrbn[19]] |= mH8G6OG[Fomrbn[24]] << mH8G6OG[Fomrbn[22]], mH8G6OG[Fomrbn[22]] += (mH8G6OG[Fomrbn[24]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-          do {
-            tloA3pl(mH8G6OG[-Fomrbn[43]].push(mH8G6OG[Fomrbn[19]] & Fomrbn[11]), mH8G6OG[Fomrbn[19]] >>= Fomrbn[4], mH8G6OG[Fomrbn[22]] -= Fomrbn[4]);
-          } while (mH8G6OG[Fomrbn[22]] > Fomrbn[24]);
-          mH8G6OG[Fomrbn[24]] = -Fomrbn[1];
-        }
-      }
-      if (mH8G6OG[Fomrbn[24]] > -Fomrbn[1]) {
-        mH8G6OG[-Fomrbn[43]].push((mH8G6OG[Fomrbn[19]] | mH8G6OG[Fomrbn[24]] << mH8G6OG[Fomrbn[22]]) & Fomrbn[11]);
-      }
-      return Mm1ss75(mH8G6OG[-Fomrbn[43]]);
-    }
-    function HvqMty(...mH8G6OG) {
-      mH8G6OG[Fomrbn[0]] = Fomrbn[1];
-      if (typeof eD6l46[mH8G6OG[Fomrbn[3]]] === Fomrbn[17]) {
-        return eD6l46[mH8G6OG[Fomrbn[3]]] = _yqkI4F(eU4fEX[mH8G6OG[Fomrbn[3]]]);
-      }
-      return eD6l46[mH8G6OG[Fomrbn[3]]];
-    }
-    console[HvqMty(94)](HvqMty(95));
-  }
-})()[WwR_y8(96)](S6aS9X((...mH8G6OG) => {
-  tloA3pl(mH8G6OG[Fomrbn[0]] = Fomrbn[1], S6aS9X(SySSOs), S6aS9X(_wnIU7S));
-  function _wnIU7S(...mH8G6OG) {
-    tloA3pl(mH8G6OG[Fomrbn[0]] = Fomrbn[1], mH8G6OG[Fomrbn[1]] = "P*J,9U5^:&kCo[#F~ihBa1]fuG+`={3H?lN0tRZ6|M}E\"c.OVmqXK;2dQvw/np)>Wx!j(I%7yDS4zbT<AL_Ygs8r@$e", mH8G6OG[Fomrbn[2]] = "" + (mH8G6OG[Fomrbn[3]] || ""), mH8G6OG[Fomrbn[44]] = mH8G6OG[Fomrbn[2]].length, mH8G6OG[Fomrbn[30]] = [], mH8G6OG[-Fomrbn[47]] = Fomrbn[3], mH8G6OG[-Fomrbn[42]] = Fomrbn[3], mH8G6OG[-Fomrbn[46]] = -Fomrbn[1]);
-    for (mH8G6OG[Fomrbn[4]] = Fomrbn[3]; mH8G6OG[Fomrbn[4]] < mH8G6OG[Fomrbn[44]]; mH8G6OG[Fomrbn[4]]++) {
-      mH8G6OG[Fomrbn[45]] = mH8G6OG[Fomrbn[1]].indexOf(mH8G6OG[Fomrbn[2]][mH8G6OG[Fomrbn[4]]]);
-      if (mH8G6OG[Fomrbn[45]] === -Fomrbn[1]) continue;
-      if (mH8G6OG[-Fomrbn[46]] < Fomrbn[3]) {
-        mH8G6OG[-Fomrbn[46]] = mH8G6OG[Fomrbn[45]];
-      } else {
-        tloA3pl(mH8G6OG[-Fomrbn[46]] += mH8G6OG[Fomrbn[45]] * Fomrbn[29], mH8G6OG[-Fomrbn[47]] |= mH8G6OG[-Fomrbn[46]] << mH8G6OG[-Fomrbn[42]], mH8G6OG[-Fomrbn[42]] += (mH8G6OG[-Fomrbn[46]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-        do {
-          tloA3pl(mH8G6OG[Fomrbn[30]].push(mH8G6OG[-Fomrbn[47]] & Fomrbn[11]), mH8G6OG[-Fomrbn[47]] >>= Fomrbn[4], mH8G6OG[-Fomrbn[42]] -= Fomrbn[4]);
-        } while (mH8G6OG[-Fomrbn[42]] > Fomrbn[24]);
-        mH8G6OG[-Fomrbn[46]] = -Fomrbn[1];
-      }
-    }
-    if (mH8G6OG[-Fomrbn[46]] > -Fomrbn[1]) {
-      mH8G6OG[Fomrbn[30]].push((mH8G6OG[-Fomrbn[47]] | mH8G6OG[-Fomrbn[46]] << mH8G6OG[-Fomrbn[42]]) & Fomrbn[11]);
-    }
-    return Mm1ss75(mH8G6OG[Fomrbn[30]]);
-  }
-  function SySSOs(...mH8G6OG) {
-    mH8G6OG[Fomrbn[0]] = Fomrbn[1];
-    if (typeof eD6l46[mH8G6OG[Fomrbn[3]]] === Fomrbn[17]) {
-      return eD6l46[mH8G6OG[Fomrbn[3]]] = _wnIU7S(eU4fEX[mH8G6OG[Fomrbn[3]]]);
-    }
-    return eD6l46[mH8G6OG[Fomrbn[3]]];
-  }
-  $[WwR_y8(97)]("", "\u274C " + $[SySSOs(98)] + SySSOs(99) + mH8G6OG[Fomrbn[3]] + "!", "");
-}))[WwR_y8(100)]((...mH8G6OG) => {
-  tloA3pl(mH8G6OG[Fomrbn[0]] = Fomrbn[3], S6aS9X(SySSOs), S6aS9X(_wnIU7S));
-  function _wnIU7S(...mH8G6OG) {
-    tloA3pl(mH8G6OG[Fomrbn[0]] = Fomrbn[1], mH8G6OG[Fomrbn[15]] = "BOUTGNagXkDMn}1FpbuK5E4V*~y0=h|2tfPZ#cv?86L^qsH9r]AWm$l&/x3JQ<iwY+\">C%zo[;e:d)S,jI@7{.(!`R_", mH8G6OG[Fomrbn[2]] = "" + (mH8G6OG[Fomrbn[3]] || ""), mH8G6OG[Fomrbn[13]] = mH8G6OG[Fomrbn[2]].length, mH8G6OG[Fomrbn[42]] = [], mH8G6OG[-Fomrbn[49]] = Fomrbn[3], mH8G6OG[Fomrbn[9]] = Fomrbn[3], mH8G6OG[Fomrbn[7]] = -Fomrbn[1]);
-    for (mH8G6OG[Fomrbn[4]] = Fomrbn[3]; mH8G6OG[Fomrbn[4]] < mH8G6OG[Fomrbn[13]]; mH8G6OG[Fomrbn[4]]++) {
-      mH8G6OG[Fomrbn[48]] = mH8G6OG[Fomrbn[15]].indexOf(mH8G6OG[Fomrbn[2]][mH8G6OG[Fomrbn[4]]]);
-      if (mH8G6OG[Fomrbn[48]] === -Fomrbn[1]) continue;
-      if (mH8G6OG[Fomrbn[7]] < Fomrbn[3]) {
-        mH8G6OG[Fomrbn[7]] = mH8G6OG[Fomrbn[48]];
-      } else {
-        tloA3pl(mH8G6OG[Fomrbn[7]] += mH8G6OG[Fomrbn[48]] * Fomrbn[29], mH8G6OG[-Fomrbn[49]] |= mH8G6OG[Fomrbn[7]] << mH8G6OG[Fomrbn[9]], mH8G6OG[Fomrbn[9]] += (mH8G6OG[Fomrbn[7]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-        do {
-          tloA3pl(mH8G6OG[Fomrbn[42]].push(mH8G6OG[-Fomrbn[49]] & Fomrbn[11]), mH8G6OG[-Fomrbn[49]] >>= Fomrbn[4], mH8G6OG[Fomrbn[9]] -= Fomrbn[4]);
-        } while (mH8G6OG[Fomrbn[9]] > Fomrbn[24]);
-        mH8G6OG[Fomrbn[7]] = -Fomrbn[1];
-      }
-    }
-    if (mH8G6OG[Fomrbn[7]] > -Fomrbn[1]) {
-      mH8G6OG[Fomrbn[42]].push((mH8G6OG[-Fomrbn[49]] | mH8G6OG[Fomrbn[7]] << mH8G6OG[Fomrbn[9]]) & Fomrbn[11]);
-    }
-    return Mm1ss75(mH8G6OG[Fomrbn[42]]);
-  }
-  function SySSOs(...mH8G6OG) {
-    mH8G6OG[Fomrbn[0]] = Fomrbn[1];
-    if (typeof eD6l46[mH8G6OG[Fomrbn[3]]] === Fomrbn[17]) {
-      return eD6l46[mH8G6OG[Fomrbn[3]]] = _wnIU7S(eU4fEX[mH8G6OG[Fomrbn[3]]]);
-    }
-    return eD6l46[mH8G6OG[Fomrbn[3]]];
-  }
-  $[SySSOs(101)]();
-});
-async function HYs0PJr(mH8G6OG, _wnIU7S, SySSOs) {
-  if (!SySSOs) {
-    SySSOs = function (...mH8G6OG) {
-      mH8G6OG[Fomrbn[0]] = Fomrbn[1];
-      if (typeof eD6l46[mH8G6OG[Fomrbn[3]]] === Fomrbn[17]) {
-        return eD6l46[mH8G6OG[Fomrbn[3]]] = _wnIU7S(eU4fEX[mH8G6OG[Fomrbn[3]]]);
-      }
-      return eD6l46[mH8G6OG[Fomrbn[3]]];
+class _0x9d1851 {
+  constructor() {
+    this.index = _0x49dfef.userIdx++;
+    this.name = "";
+    this.valid = false;
+    const _0x46f57a = {
+      limit: 0
     };
-  }
-  if (!_wnIU7S) {
-    _wnIU7S = function (...mH8G6OG) {
-      tloA3pl(mH8G6OG[Fomrbn[0]] = Fomrbn[1], mH8G6OG[Fomrbn[1]] = "xOCWqPtRGNsrElpJV&3[g#}X4Q|DubS:ckLTv]MIw;o/7\"1inY>mde!Z9j^ya_6=$~A2{%KfhFBUH*z(?0@+<)85,.`", mH8G6OG[Fomrbn[2]] = "" + (mH8G6OG[Fomrbn[3]] || ""), mH8G6OG[Fomrbn[13]] = mH8G6OG[Fomrbn[2]].length, mH8G6OG[Fomrbn[42]] = [], mH8G6OG[Fomrbn[30]] = Fomrbn[3], mH8G6OG[Fomrbn[22]] = Fomrbn[3], mH8G6OG[Fomrbn[24]] = -Fomrbn[1]);
-      for (mH8G6OG[Fomrbn[38]] = Fomrbn[3]; mH8G6OG[Fomrbn[38]] < mH8G6OG[Fomrbn[13]]; mH8G6OG[Fomrbn[38]]++) {
-        mH8G6OG[Fomrbn[40]] = mH8G6OG[Fomrbn[1]].indexOf(mH8G6OG[Fomrbn[2]][mH8G6OG[Fomrbn[38]]]);
-        if (mH8G6OG[Fomrbn[40]] === -Fomrbn[1]) continue;
-        if (mH8G6OG[Fomrbn[24]] < Fomrbn[3]) {
-          mH8G6OG[Fomrbn[24]] = mH8G6OG[Fomrbn[40]];
-        } else {
-          tloA3pl(mH8G6OG[Fomrbn[24]] += mH8G6OG[Fomrbn[40]] * Fomrbn[29], mH8G6OG[Fomrbn[30]] |= mH8G6OG[Fomrbn[24]] << mH8G6OG[Fomrbn[22]], mH8G6OG[Fomrbn[22]] += (mH8G6OG[Fomrbn[24]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-          do {
-            tloA3pl(mH8G6OG[Fomrbn[42]].push(mH8G6OG[Fomrbn[30]] & Fomrbn[11]), mH8G6OG[Fomrbn[30]] >>= Fomrbn[4], mH8G6OG[Fomrbn[22]] -= Fomrbn[4]);
-          } while (mH8G6OG[Fomrbn[22]] > Fomrbn[24]);
-          mH8G6OG[Fomrbn[24]] = -Fomrbn[1];
-        }
-      }
-      if (mH8G6OG[Fomrbn[24]] > -Fomrbn[1]) {
-        mH8G6OG[Fomrbn[42]].push((mH8G6OG[Fomrbn[30]] | mH8G6OG[Fomrbn[24]] << mH8G6OG[Fomrbn[22]]) & Fomrbn[11]);
-      }
-      return Mm1ss75(mH8G6OG[Fomrbn[42]]);
+    const _0x42e66e = {
+      Connection: "keep-alive"
     };
-  }
-  tloA3pl(S6aS9X(SySSOs), S6aS9X(_wnIU7S), mH8G6OG = zoAcGM(mH8G6OG));
-  let _yqkI4F = {
-      [SySSOs(102)]: Fomrbn[47],
-      [SySSOs(103)]: SySSOs(104),
-      [SySSOs(Fomrbn[45])]: Fomrbn[3],
-      [SySSOs(106)]: encodeURIComponent(mH8G6OG)
-    },
-    HvqMty = await zC379rl[SySSOs(107)](SySSOs(108), _yqkI4F),
-    IiGSchH = {
-      [SySSOs(109)]: SySSOs(Fomrbn[39]) + HvqMty,
-      [SySSOs(111)]: {
-        [SySSOs(112)]: SySSOs(113),
-        [SySSOs(114)]: SySSOs(115),
-        [SySSOs(116)]: SySSOs(117),
-        [SySSOs(118)]: SySSOs(119),
-        [SySSOs(120)]: SySSOs(121)
-      }
+    const _0x1612bd = {
+      retry: _0x46f57a,
+      timeout: _0x128624,
+      followRedirect: false,
+      ignoreInvalidCookies: true,
+      headers: _0x42e66e
     };
-  return new Promise(async mH8G6OG => {
-    tloA3pl(S6aS9X(SySSOs), S6aS9X(_wnIU7S));
-    function _wnIU7S(...mH8G6OG) {
-      tloA3pl(mH8G6OG[Fomrbn[0]] = Fomrbn[1], mH8G6OG[Fomrbn[15]] = "1Qoj6F(UdY2#4+`TL!?u)VmEH._Z^9>%A*&{C,fSylg$@qa]7sb5cxei\"[/kX0~3;h=KzrIvt:Bw|}DGnP<J8RpMNWO", mH8G6OG[-Fomrbn[50]] = "" + (mH8G6OG[Fomrbn[3]] || ""), mH8G6OG[Fomrbn[44]] = mH8G6OG[-Fomrbn[50]].length, mH8G6OG[Fomrbn[42]] = [], mH8G6OG[Fomrbn[41]] = Fomrbn[3], mH8G6OG[Fomrbn[9]] = Fomrbn[3], mH8G6OG[-Fomrbn[53]] = -Fomrbn[1]);
-      for (mH8G6OG[Fomrbn[51]] = Fomrbn[3]; mH8G6OG[Fomrbn[51]] < mH8G6OG[Fomrbn[44]]; mH8G6OG[Fomrbn[51]]++) {
-        mH8G6OG[-Fomrbn[52]] = mH8G6OG[Fomrbn[15]].indexOf(mH8G6OG[-Fomrbn[50]][mH8G6OG[Fomrbn[51]]]);
-        if (mH8G6OG[-Fomrbn[52]] === -Fomrbn[1]) continue;
-        if (mH8G6OG[-Fomrbn[53]] < Fomrbn[3]) {
-          mH8G6OG[-Fomrbn[53]] = mH8G6OG[-Fomrbn[52]];
-        } else {
-          tloA3pl(mH8G6OG[-Fomrbn[53]] += mH8G6OG[-Fomrbn[52]] * Fomrbn[29], mH8G6OG[Fomrbn[41]] |= mH8G6OG[-Fomrbn[53]] << mH8G6OG[Fomrbn[9]], mH8G6OG[Fomrbn[9]] += (mH8G6OG[-Fomrbn[53]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-          do {
-            tloA3pl(mH8G6OG[Fomrbn[42]].push(mH8G6OG[Fomrbn[41]] & Fomrbn[11]), mH8G6OG[Fomrbn[41]] >>= Fomrbn[4], mH8G6OG[Fomrbn[9]] -= Fomrbn[4]);
-          } while (mH8G6OG[Fomrbn[9]] > Fomrbn[24]);
-          mH8G6OG[-Fomrbn[53]] = -Fomrbn[1];
-        }
-      }
-      if (mH8G6OG[-Fomrbn[53]] > -Fomrbn[1]) {
-        mH8G6OG[Fomrbn[42]].push((mH8G6OG[Fomrbn[41]] | mH8G6OG[-Fomrbn[53]] << mH8G6OG[Fomrbn[9]]) & Fomrbn[11]);
-      }
-      return Mm1ss75(mH8G6OG[Fomrbn[42]]);
+    this.got = _0x8e0885.extend(_0x1612bd);
+    if (_0xdb6efe == 0) {
+      _0x11cae0();
     }
-    function SySSOs(...mH8G6OG) {
-      mH8G6OG[Fomrbn[0]] = Fomrbn[1];
-      if (typeof eD6l46[mH8G6OG[Fomrbn[3]]] === Fomrbn[17]) {
-        return eD6l46[mH8G6OG[Fomrbn[3]]] = _wnIU7S(eU4fEX[mH8G6OG[Fomrbn[3]]]);
-      }
-      return eD6l46[mH8G6OG[Fomrbn[3]]];
+  }
+  log(_0x42a357, _0x32d0cc = {}, _0x4e4355 = false) {
+    var _0x58117c = "",
+      _0x9ca0e2 = _0x49dfef.userCount.toString().length;
+    if (this.index) {
+      _0x58117c += "\u8D26\u53F7[" + _0x49dfef.padStr(this.index, _0x9ca0e2) + "]";
     }
-    $[SySSOs(122)](IiGSchH, S6aS9X((..._wnIU7S) => {
-      _wnIU7S[Fomrbn[0]] = Fomrbn[44];
+    if (this.name) {
+      _0x58117c += "[" + this.name + "]";
+    }
+    let logEntry = _0x58117c + _0x42a357;
+    this.logs.push(logEntry); // 将日志存储到 logs 数组中
+    if (_0x4e4355) {
+      _0x49dfef.log(logEntry, _0x32d0cc);
+    }
+  }
+  set_cookie(_0x309397, _0x3ab012, _0x4a8547, _0x1320cb, _0x482400 = {}) {
+    this.cookieJar.setCookieSync(_0x309397 + "=" + _0x3ab012 + "; Domain=" + _0x4a8547 + ";", "" + _0x1320cb);
+  }
+  async request(_0x29ad8a) {
+    const _0x58b4a1 = ["ECONNRESET", "EADDRINUSE", "ENOTFOUND", "EAI_AGAIN"],
+      _0x497c09 = ["TimeoutError"],
+      _0x54807f = ["EPROTO"],
+      _0x30eee7 = [];
+    var _0x208a74 = null,
+      _0x3a35d0 = 0,
+      _0x1684d3 = _0x29ad8a.fn || _0x29ad8a.url;
+    let _0x25d788 = _0x49dfef.get(_0x29ad8a, "valid_code", _0x30eee7);
+    _0x29ad8a.method = _0x29ad8a?.["method"]?.["toUpperCase"]() || "GET";
+    let _0x19ce7b, _0x5c8c40;
+    while (_0x3a35d0 < _0x5a04a9) {
       try {
-        if (_wnIU7S[Fomrbn[3]]) {
-          tloA3pl(S6aS9X(HvqMty), S6aS9X(_yqkI4F));
-          function _yqkI4F(..._wnIU7S) {
-            tloA3pl(_wnIU7S[Fomrbn[0]] = Fomrbn[1], _wnIU7S[Fomrbn[55]] = "F&DsiUABenJ|tuqw$3RhKQ5o,Mf+yvpNHPalL`X*!C8c{YEgrm]7bkT?ZIOxzdjSV%=9^2WG_}(/;~40@1)6:.[#<\">", _wnIU7S[Fomrbn[12]] = "" + (_wnIU7S[Fomrbn[3]] || ""), _wnIU7S[Fomrbn[13]] = _wnIU7S[Fomrbn[12]].length, _wnIU7S[Fomrbn[10]] = [], _wnIU7S[Fomrbn[41]] = Fomrbn[3], _wnIU7S[Fomrbn[9]] = Fomrbn[3], _wnIU7S[Fomrbn[24]] = -Fomrbn[1]);
-            for (_wnIU7S[Fomrbn[54]] = Fomrbn[3]; _wnIU7S[Fomrbn[54]] < _wnIU7S[Fomrbn[13]]; _wnIU7S[Fomrbn[54]]++) {
-              _wnIU7S[Fomrbn[40]] = _wnIU7S[Fomrbn[55]].indexOf(_wnIU7S[Fomrbn[12]][_wnIU7S[Fomrbn[54]]]);
-              if (_wnIU7S[Fomrbn[40]] === -Fomrbn[1]) continue;
-              if (_wnIU7S[Fomrbn[24]] < Fomrbn[3]) {
-                _wnIU7S[Fomrbn[24]] = _wnIU7S[Fomrbn[40]];
-              } else {
-                tloA3pl(_wnIU7S[Fomrbn[24]] += _wnIU7S[Fomrbn[40]] * Fomrbn[29], _wnIU7S[Fomrbn[41]] |= _wnIU7S[Fomrbn[24]] << _wnIU7S[Fomrbn[9]], _wnIU7S[Fomrbn[9]] += (_wnIU7S[Fomrbn[24]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-                do {
-                  tloA3pl(_wnIU7S[Fomrbn[10]].push(_wnIU7S[Fomrbn[41]] & Fomrbn[11]), _wnIU7S[Fomrbn[41]] >>= Fomrbn[4], _wnIU7S[Fomrbn[9]] -= Fomrbn[4]);
-                } while (_wnIU7S[Fomrbn[9]] > Fomrbn[24]);
-                _wnIU7S[Fomrbn[24]] = -Fomrbn[1];
-              }
-            }
-            if (_wnIU7S[Fomrbn[24]] > -Fomrbn[1]) {
-              _wnIU7S[Fomrbn[10]].push((_wnIU7S[Fomrbn[41]] | _wnIU7S[Fomrbn[24]] << _wnIU7S[Fomrbn[9]]) & Fomrbn[11]);
-            }
-            return Mm1ss75(_wnIU7S[Fomrbn[10]]);
-          }
-          function HvqMty(..._wnIU7S) {
-            _wnIU7S[Fomrbn[0]] = Fomrbn[1];
-            if (typeof eD6l46[_wnIU7S[Fomrbn[3]]] === Fomrbn[17]) {
-              return eD6l46[_wnIU7S[Fomrbn[3]]] = _yqkI4F(eU4fEX[_wnIU7S[Fomrbn[3]]]);
-            }
-            return eD6l46[_wnIU7S[Fomrbn[3]]];
-          }
-          $[HvqMty(123)](_wnIU7S[Fomrbn[3]]);
+        _0x3a35d0++;
+        _0x19ce7b = "";
+        _0x5c8c40 = "";
+        let _0x1fa216 = null,
+          _0x123eec = _0x29ad8a?.["timeout"] || this.got?.["defaults"]?.["options"]?.["timeout"]?.["request"] || _0x128624,
+          _0x34e77b = false,
+          _0x5397b0 = Math.max(this.index - 17, 0),
+          _0x5d25e7 = Math.min(Math.max(this.index - 18, 1), 18),
+          _0x52755a = Math.min(Math.max(this.index - 19, 1), 19),
+          _0x15d328 = _0x5397b0 * _0x5d25e7 * _0x52755a * 4,
+          _0x2c4c80 = _0x5397b0 * _0x5d25e7 * _0x52755a * 18,
+          _0x4cfee0 = _0x15d328 + Math.floor(Math.random() * _0x2c4c80),
+          _0x15dce7 = _0x300c8e * (_0x300c8e - 1) * 20,
+          _0x5ca50a = (_0x300c8e - 1) * (_0x300c8e - 1) * 20,
+          _0x333735 = _0x15dce7 + Math.floor(Math.random() * _0x5ca50a),
+          _0x573d35 = Math.max(_0x49dfef.userCount - 19, 0),
+          _0x25871d = Math.max(_0x49dfef.userCount - 20, 0),
+          _0x34f531 = _0x573d35 * 2,
+          _0x1bd293 = _0x25871d * 4,
+          _0x4845e7 = _0x34f531 + Math.floor(Math.random() * _0x1bd293),
+          _0x5dc50f = _0x4cfee0 + _0x333735 + _0x4845e7;
+        await _0x49dfef.wait(_0x5dc50f);
+        await new Promise(async _0x45b1d3 => {
+          setTimeout(() => {
+            _0x34e77b = true;
+            _0x45b1d3();
+          }, _0x123eec);
+          await this.got(_0x29ad8a).then(_0x284c2a => {
+            _0x208a74 = _0x284c2a;
+          }, _0x55b6b8 => {
+            _0x1fa216 = _0x55b6b8;
+            _0x208a74 = _0x55b6b8.response;
+            _0x19ce7b = _0x1fa216?.["code"] || "";
+            _0x5c8c40 = _0x1fa216?.["name"] || "";
+          });
+          _0x45b1d3();
+        });
+        if (_0x34e77b) {
+          this.log("[" + _0x1684d3 + "]\u8BF7\u6C42\u8D85\u65F6(" + _0x123eec / 1000 + "\u79D2)\uFF0C\u91CD\u8BD5\u7B2C" + _0x3a35d0 + "\u6B21");
         } else {
-          tloA3pl(S6aS9X(YWPkZWu), S6aS9X(IiGSchH));
-          function IiGSchH(..._wnIU7S) {
-            tloA3pl(_wnIU7S[Fomrbn[0]] = Fomrbn[1], _wnIU7S[Fomrbn[1]] = "7AxoBQy1kq@M2YuP&gVDIE.]dJaN4i_<5s3Te;/OHU[*C`}^!~v6h#$G=Rwp{cn>f(,lbZK|S:Wj?rzmF)L8tX9+\"0%", _wnIU7S[-Fomrbn[56]] = "" + (_wnIU7S[Fomrbn[3]] || ""), _wnIU7S[Fomrbn[13]] = _wnIU7S[-Fomrbn[56]].length, _wnIU7S[-Fomrbn[58]] = [], _wnIU7S[Fomrbn[30]] = Fomrbn[3], _wnIU7S[Fomrbn[9]] = Fomrbn[3], _wnIU7S[Fomrbn[7]] = -Fomrbn[1]);
-            for (_wnIU7S[Fomrbn[38]] = Fomrbn[3]; _wnIU7S[Fomrbn[38]] < _wnIU7S[Fomrbn[13]]; _wnIU7S[Fomrbn[38]]++) {
-              _wnIU7S[Fomrbn[57]] = _wnIU7S[Fomrbn[1]].indexOf(_wnIU7S[-Fomrbn[56]][_wnIU7S[Fomrbn[38]]]);
-              if (_wnIU7S[Fomrbn[57]] === -Fomrbn[1]) continue;
-              if (_wnIU7S[Fomrbn[7]] < Fomrbn[3]) {
-                _wnIU7S[Fomrbn[7]] = _wnIU7S[Fomrbn[57]];
-              } else {
-                tloA3pl(_wnIU7S[Fomrbn[7]] += _wnIU7S[Fomrbn[57]] * Fomrbn[29], _wnIU7S[Fomrbn[30]] |= _wnIU7S[Fomrbn[7]] << _wnIU7S[Fomrbn[9]], _wnIU7S[Fomrbn[9]] += (_wnIU7S[Fomrbn[7]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-                do {
-                  tloA3pl(_wnIU7S[-Fomrbn[58]].push(_wnIU7S[Fomrbn[30]] & Fomrbn[11]), _wnIU7S[Fomrbn[30]] >>= Fomrbn[4], _wnIU7S[Fomrbn[9]] -= Fomrbn[4]);
-                } while (_wnIU7S[Fomrbn[9]] > Fomrbn[24]);
-                _wnIU7S[Fomrbn[7]] = -Fomrbn[1];
-              }
+          if (_0x54807f.includes(_0x19ce7b)) {
+            this.log("[" + _0x1684d3 + "]\u8BF7\u6C42\u9519\u8BEF[" + _0x19ce7b + "][" + _0x5c8c40 + "]");
+            if (_0x1fa216?.["message"]) {
+              console.log(_0x1fa216.message);
             }
-            if (_wnIU7S[Fomrbn[7]] > -Fomrbn[1]) {
-              _wnIU7S[-Fomrbn[58]].push((_wnIU7S[Fomrbn[30]] | _wnIU7S[Fomrbn[7]] << _wnIU7S[Fomrbn[9]]) & Fomrbn[11]);
-            }
-            return Mm1ss75(_wnIU7S[-Fomrbn[58]]);
-          }
-          function YWPkZWu(..._wnIU7S) {
-            _wnIU7S[Fomrbn[0]] = Fomrbn[1];
-            if (typeof eD6l46[_wnIU7S[Fomrbn[3]]] === Fomrbn[17]) {
-              return eD6l46[_wnIU7S[Fomrbn[3]]] = IiGSchH(eU4fEX[_wnIU7S[Fomrbn[3]]]);
-            }
-            return eD6l46[_wnIU7S[Fomrbn[3]]];
-          }
-          _wnIU7S[Fomrbn[2]] = JSON[SySSOs(124)](_wnIU7S[Fomrbn[2]]);
-          if (_wnIU7S[Fomrbn[2]][YWPkZWu(Fomrbn[20])] == Fomrbn[3]) {
-            tloA3pl(S6aS9X(WwR_y8), S6aS9X(EhcNXJ));
-            function EhcNXJ(..._wnIU7S) {
-              tloA3pl(_wnIU7S[Fomrbn[0]] = Fomrbn[1], _wnIU7S[Fomrbn[15]] = "f;1}=_z.3?)~,w0uv\"&*+`]^sL7XDh9Z4R[Bo/2!NAaH>g5c:xeyK<(Tild{$@S|UPtbjOYErkFVC#mG%QJWIpM6nq8", _wnIU7S[-Fomrbn[39]] = "" + (_wnIU7S[Fomrbn[3]] || ""), _wnIU7S[-Fomrbn[59]] = _wnIU7S[-Fomrbn[39]].length, _wnIU7S[Fomrbn[42]] = [], _wnIU7S[-Fomrbn[62]] = Fomrbn[3], _wnIU7S[-Fomrbn[47]] = Fomrbn[3], _wnIU7S[Fomrbn[61]] = -Fomrbn[1]);
-              for (_wnIU7S[-Fomrbn[44]] = Fomrbn[3]; _wnIU7S[-Fomrbn[44]] < _wnIU7S[-Fomrbn[59]]; _wnIU7S[-Fomrbn[44]]++) {
-                _wnIU7S[-Fomrbn[60]] = _wnIU7S[Fomrbn[15]].indexOf(_wnIU7S[-Fomrbn[39]][_wnIU7S[-Fomrbn[44]]]);
-                if (_wnIU7S[-Fomrbn[60]] === -Fomrbn[1]) continue;
-                if (_wnIU7S[Fomrbn[61]] < Fomrbn[3]) {
-                  _wnIU7S[Fomrbn[61]] = _wnIU7S[-Fomrbn[60]];
-                } else {
-                  tloA3pl(_wnIU7S[Fomrbn[61]] += _wnIU7S[-Fomrbn[60]] * Fomrbn[29], _wnIU7S[-Fomrbn[62]] |= _wnIU7S[Fomrbn[61]] << _wnIU7S[-Fomrbn[47]], _wnIU7S[-Fomrbn[47]] += (_wnIU7S[Fomrbn[61]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-                  do {
-                    tloA3pl(_wnIU7S[Fomrbn[42]].push(_wnIU7S[-Fomrbn[62]] & Fomrbn[11]), _wnIU7S[-Fomrbn[62]] >>= Fomrbn[4], _wnIU7S[-Fomrbn[47]] -= Fomrbn[4]);
-                  } while (_wnIU7S[-Fomrbn[47]] > Fomrbn[24]);
-                  _wnIU7S[Fomrbn[61]] = -Fomrbn[1];
-                }
-              }
-              if (_wnIU7S[Fomrbn[61]] > -Fomrbn[1]) {
-                _wnIU7S[Fomrbn[42]].push((_wnIU7S[-Fomrbn[62]] | _wnIU7S[Fomrbn[61]] << _wnIU7S[-Fomrbn[47]]) & Fomrbn[11]);
-              }
-              return Mm1ss75(_wnIU7S[Fomrbn[42]]);
-            }
-            function WwR_y8(..._wnIU7S) {
-              _wnIU7S[Fomrbn[0]] = Fomrbn[1];
-              if (typeof eD6l46[_wnIU7S[Fomrbn[3]]] === Fomrbn[17]) {
-                return eD6l46[_wnIU7S[Fomrbn[3]]] = EhcNXJ(eU4fEX[_wnIU7S[Fomrbn[3]]]);
-              }
-              return eD6l46[_wnIU7S[Fomrbn[3]]];
-            }
-            tloA3pl(console[WwR_y8(Fomrbn[63])](""), console[WwR_y8(Fomrbn[63])](WwR_y8(Fomrbn[64]) + _wnIU7S[Fomrbn[2]][WwR_y8(Fomrbn[65])][WwR_y8(129)]), console[WwR_y8(Fomrbn[63])](WwR_y8(130) + _wnIU7S[Fomrbn[2]][WwR_y8(Fomrbn[65])][WwR_y8(131)]), console[WwR_y8(Fomrbn[63])](WwR_y8(Fomrbn[54]) + _wnIU7S[Fomrbn[2]][WwR_y8(Fomrbn[65])][WwR_y8(133)]));
+            break;
           } else {
-            tloA3pl(S6aS9X(wxqKflw), S6aS9X(CLbGOv));
-            function CLbGOv(..._wnIU7S) {
-              tloA3pl(_wnIU7S[Fomrbn[0]] = Fomrbn[1], _wnIU7S[Fomrbn[52]] = "RrSlVAOiUGjqZPWYdacnTIDEQkHBMbXfoKpNFgJmChLets<901y%@]+4w3#~^$/?)u}:x5!.(7&_v|`>2z6=8;*,[\"{", _wnIU7S[Fomrbn[12]] = "" + (_wnIU7S[Fomrbn[3]] || ""), _wnIU7S[Fomrbn[13]] = _wnIU7S[Fomrbn[12]].length, _wnIU7S[Fomrbn[42]] = [], _wnIU7S[Fomrbn[41]] = Fomrbn[3], _wnIU7S[Fomrbn[22]] = Fomrbn[3], _wnIU7S[Fomrbn[67]] = -Fomrbn[1]);
-              for (_wnIU7S[Fomrbn[66]] = Fomrbn[3]; _wnIU7S[Fomrbn[66]] < _wnIU7S[Fomrbn[13]]; _wnIU7S[Fomrbn[66]]++) {
-                _wnIU7S[Fomrbn[6]] = _wnIU7S[Fomrbn[52]].indexOf(_wnIU7S[Fomrbn[12]][_wnIU7S[Fomrbn[66]]]);
-                if (_wnIU7S[Fomrbn[6]] === -Fomrbn[1]) continue;
-                if (_wnIU7S[Fomrbn[67]] < Fomrbn[3]) {
-                  _wnIU7S[Fomrbn[67]] = _wnIU7S[Fomrbn[6]];
+            if (_0x497c09.includes(_0x5c8c40)) {
+              this.log("[" + _0x1684d3 + "]\u8BF7\u6C42\u9519\u8BEF[" + _0x19ce7b + "][" + _0x5c8c40 + "]\uFF0C\u91CD\u8BD5\u7B2C" + _0x3a35d0 + "\u6B21");
+            } else {
+              if (_0x58b4a1.includes(_0x19ce7b)) {
+                this.log("[" + _0x1684d3 + "]\u8BF7\u6C42\u9519\u8BEF[" + _0x19ce7b + "][" + _0x5c8c40 + "]\uFF0C\u91CD\u8BD5\u7B2C" + _0x3a35d0 + "\u6B21");
+              } else {
+                let _0x42b498 = _0x208a74?.["statusCode"] || "",
+                  _0x2ef704 = _0x42b498 / 100 | 0;
+                if (_0x42b498) {
+                  _0x2ef704 > 3 && !_0x25d788.includes(_0x42b498) && (_0x42b498 ? this.log("\u8BF7\u6C42[" + _0x1684d3 + "]\u8FD4\u56DE[" + _0x42b498 + "]") : this.log("\u8BF7\u6C42[" + _0x1684d3 + "]\u9519\u8BEF[" + _0x19ce7b + "][" + _0x5c8c40 + "]"));
+                  if (_0x2ef704 <= 4) {
+                    break;
+                  }
                 } else {
-                  tloA3pl(_wnIU7S[Fomrbn[67]] += _wnIU7S[Fomrbn[6]] * Fomrbn[29], _wnIU7S[Fomrbn[41]] |= _wnIU7S[Fomrbn[67]] << _wnIU7S[Fomrbn[22]], _wnIU7S[Fomrbn[22]] += (_wnIU7S[Fomrbn[67]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-                  do {
-                    tloA3pl(_wnIU7S[Fomrbn[42]].push(_wnIU7S[Fomrbn[41]] & Fomrbn[11]), _wnIU7S[Fomrbn[41]] >>= Fomrbn[4], _wnIU7S[Fomrbn[22]] -= Fomrbn[4]);
-                  } while (_wnIU7S[Fomrbn[22]] > Fomrbn[24]);
-                  _wnIU7S[Fomrbn[67]] = -Fomrbn[1];
+                  this.log("\u8BF7\u6C42[" + _0x1684d3 + "]\u9519\u8BEF[" + _0x19ce7b + "][" + _0x5c8c40 + "]");
                 }
               }
-              if (_wnIU7S[Fomrbn[67]] > -Fomrbn[1]) {
-                _wnIU7S[Fomrbn[42]].push((_wnIU7S[Fomrbn[41]] | _wnIU7S[Fomrbn[67]] << _wnIU7S[Fomrbn[22]]) & Fomrbn[11]);
-              }
-              return Mm1ss75(_wnIU7S[Fomrbn[42]]);
-            }
-            function wxqKflw(..._wnIU7S) {
-              _wnIU7S[Fomrbn[0]] = Fomrbn[1];
-              if (typeof eD6l46[_wnIU7S[Fomrbn[3]]] === Fomrbn[17]) {
-                return eD6l46[_wnIU7S[Fomrbn[3]]] = CLbGOv(eU4fEX[_wnIU7S[Fomrbn[3]]]);
-              }
-              return eD6l46[_wnIU7S[Fomrbn[3]]];
-            }
-            console[wxqKflw(134)](JSON[wxqKflw(135)](_wnIU7S[Fomrbn[2]]));
-          }
-        }
-      } catch (zC379rl) {
-        tloA3pl(S6aS9X(YqUtwpv), S6aS9X(__drHm));
-        function __drHm(..._wnIU7S) {
-          tloA3pl(_wnIU7S[Fomrbn[0]] = Fomrbn[1], _wnIU7S[Fomrbn[1]] = "IPWlEpAXB$5nVyYc_fh^oZ)k!w4NRt=8,K\"mjbLeOv%CU[`#ar&1G*:/90MS.iT6x<?(H@23Qd7>z}JuF|]gD;{~s+q", _wnIU7S[Fomrbn[12]] = "" + (_wnIU7S[Fomrbn[3]] || ""), _wnIU7S[Fomrbn[13]] = _wnIU7S[Fomrbn[12]].length, _wnIU7S[Fomrbn[10]] = [], _wnIU7S[Fomrbn[30]] = Fomrbn[3], _wnIU7S[Fomrbn[9]] = Fomrbn[3], _wnIU7S[Fomrbn[7]] = -Fomrbn[1]);
-          for (_wnIU7S[-Fomrbn[68]] = Fomrbn[3]; _wnIU7S[-Fomrbn[68]] < _wnIU7S[Fomrbn[13]]; _wnIU7S[-Fomrbn[68]]++) {
-            _wnIU7S[Fomrbn[40]] = _wnIU7S[Fomrbn[1]].indexOf(_wnIU7S[Fomrbn[12]][_wnIU7S[-Fomrbn[68]]]);
-            if (_wnIU7S[Fomrbn[40]] === -Fomrbn[1]) continue;
-            if (_wnIU7S[Fomrbn[7]] < Fomrbn[3]) {
-              _wnIU7S[Fomrbn[7]] = _wnIU7S[Fomrbn[40]];
-            } else {
-              tloA3pl(_wnIU7S[Fomrbn[7]] += _wnIU7S[Fomrbn[40]] * Fomrbn[29], _wnIU7S[Fomrbn[30]] |= _wnIU7S[Fomrbn[7]] << _wnIU7S[Fomrbn[9]], _wnIU7S[Fomrbn[9]] += (_wnIU7S[Fomrbn[7]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-              do {
-                tloA3pl(_wnIU7S[Fomrbn[10]].push(_wnIU7S[Fomrbn[30]] & Fomrbn[11]), _wnIU7S[Fomrbn[30]] >>= Fomrbn[4], _wnIU7S[Fomrbn[9]] -= Fomrbn[4]);
-              } while (_wnIU7S[Fomrbn[9]] > Fomrbn[24]);
-              _wnIU7S[Fomrbn[7]] = -Fomrbn[1];
             }
           }
-          if (_wnIU7S[Fomrbn[7]] > -Fomrbn[1]) {
-            _wnIU7S[Fomrbn[10]].push((_wnIU7S[Fomrbn[30]] | _wnIU7S[Fomrbn[7]] << _wnIU7S[Fomrbn[9]]) & Fomrbn[11]);
-          }
-          return Mm1ss75(_wnIU7S[Fomrbn[10]]);
         }
-        function YqUtwpv(..._wnIU7S) {
-          _wnIU7S[Fomrbn[0]] = Fomrbn[1];
-          if (typeof eD6l46[_wnIU7S[Fomrbn[3]]] === Fomrbn[17]) {
-            return eD6l46[_wnIU7S[Fomrbn[3]]] = __drHm(eU4fEX[_wnIU7S[Fomrbn[3]]]);
-          }
-          return eD6l46[_wnIU7S[Fomrbn[3]]];
-        }
-        $[YqUtwpv(136)](zC379rl);
-      } finally {
-        mH8G6OG();
-      }
-    }, Fomrbn[44]));
-  });
-}
-function zoAcGM(...mH8G6OG) {
-  tloA3pl(S6aS9X(SySSOs), S6aS9X(_wnIU7S));
-  function _wnIU7S(...mH8G6OG) {
-    tloA3pl(mH8G6OG[Fomrbn[0]] = Fomrbn[1], mH8G6OG[Fomrbn[15]] = "A:|Lc(!k#bBS6z*m<yC;FR2IM`+%lN@5J>~0/D\"an7H,&ue1Xd{gYGW_)KvZrwQT3xf9]qOs^?EUVtpj=i$.o48}[hP", mH8G6OG[Fomrbn[2]] = "" + (mH8G6OG[Fomrbn[3]] || ""), mH8G6OG[Fomrbn[13]] = mH8G6OG[Fomrbn[2]].length, mH8G6OG[Fomrbn[10]] = [], mH8G6OG[Fomrbn[30]] = Fomrbn[3], mH8G6OG[-Fomrbn[70]] = Fomrbn[3], mH8G6OG[-Fomrbn[69]] = -Fomrbn[1]);
-    for (mH8G6OG[Fomrbn[38]] = Fomrbn[3]; mH8G6OG[Fomrbn[38]] < mH8G6OG[Fomrbn[13]]; mH8G6OG[Fomrbn[38]]++) {
-      mH8G6OG[Fomrbn[40]] = mH8G6OG[Fomrbn[15]].indexOf(mH8G6OG[Fomrbn[2]][mH8G6OG[Fomrbn[38]]]);
-      if (mH8G6OG[Fomrbn[40]] === -Fomrbn[1]) continue;
-      if (mH8G6OG[-Fomrbn[69]] < Fomrbn[3]) {
-        mH8G6OG[-Fomrbn[69]] = mH8G6OG[Fomrbn[40]];
-      } else {
-        tloA3pl(mH8G6OG[-Fomrbn[69]] += mH8G6OG[Fomrbn[40]] * Fomrbn[29], mH8G6OG[Fomrbn[30]] |= mH8G6OG[-Fomrbn[69]] << mH8G6OG[-Fomrbn[70]], mH8G6OG[-Fomrbn[70]] += (mH8G6OG[-Fomrbn[69]] & Fomrbn[31]) > Fomrbn[32] ? Fomrbn[33] : Fomrbn[34]);
-        do {
-          tloA3pl(mH8G6OG[Fomrbn[10]].push(mH8G6OG[Fomrbn[30]] & Fomrbn[11]), mH8G6OG[Fomrbn[30]] >>= Fomrbn[4], mH8G6OG[-Fomrbn[70]] -= Fomrbn[4]);
-        } while (mH8G6OG[-Fomrbn[70]] > Fomrbn[24]);
-        mH8G6OG[-Fomrbn[69]] = -Fomrbn[1];
+      } catch (_0xa3ad4) {
+        _0xa3ad4.name == "TimeoutError" ? this.log("[" + _0x1684d3 + "]\u8BF7\u6C42\u8D85\u65F6\uFF0C\u91CD\u8BD5\u7B2C" + _0x3a35d0 + "\u6B21") : this.log("[" + _0x1684d3 + "]\u8BF7\u6C42\u9519\u8BEF(" + _0xa3ad4.message + ")\uFF0C\u91CD\u8BD5\u7B2C" + _0x3a35d0 + "\u6B21");
       }
     }
-    if (mH8G6OG[-Fomrbn[69]] > -Fomrbn[1]) {
-      mH8G6OG[Fomrbn[10]].push((mH8G6OG[Fomrbn[30]] | mH8G6OG[-Fomrbn[69]] << mH8G6OG[-Fomrbn[70]]) & Fomrbn[11]);
+    const _0x14f89a = {
+      statusCode: _0x19ce7b || -1,
+      headers: null,
+      result: null
+    };
+    if (_0x208a74 == null) {
+      return Promise.resolve(_0x14f89a);
     }
-    return Mm1ss75(mH8G6OG[Fomrbn[10]]);
-  }
-  function SySSOs(...mH8G6OG) {
-    mH8G6OG[Fomrbn[0]] = Fomrbn[1];
-    if (typeof eD6l46[mH8G6OG[Fomrbn[3]]] === Fomrbn[17]) {
-      return eD6l46[mH8G6OG[Fomrbn[3]]] = _wnIU7S(eU4fEX[mH8G6OG[Fomrbn[3]]]);
-    }
-    return eD6l46[mH8G6OG[Fomrbn[3]]];
-  }
-  const _yqkI4F = __drHm[WwR_y8(137)][SySSOs(138)](mH8G6OG[Fomrbn[3]], __drHm[SySSOs(Fomrbn[71])][SySSOs(Fomrbn[72])][SySSOs(Fomrbn[73])](SySSOs(142)), {
-    iv: __drHm[SySSOs(Fomrbn[71])][SySSOs(Fomrbn[72])][SySSOs(Fomrbn[73])](SySSOs(143)),
-    [SySSOs(Fomrbn[74])]: __drHm[SySSOs(Fomrbn[74])][SySSOs(145)],
-    [SySSOs(146)]: __drHm[SySSOs(147)][SySSOs(Fomrbn[52])]
-  });
-  return _yqkI4F[SySSOs(149)][SySSOs(150)](__drHm[SySSOs(Fomrbn[71])][SySSOs(151)]);
-}
-function tloA3pl() {
-  tloA3pl = function () {};
-}
-function Env(t, e) {
-  "undefined" != typeof process && JSON.stringify(process.env).indexOf("GITHUB") > -1 && process.exit(0);
-  class s {
-    constructor(t) {
-      this.env = t;
-    }
-    send(t, e = "GET") {
-      t = "string" == typeof t ? {
-        url: t
-      } : t;
-      let s = this.get;
-      return "POST" === e && (s = this.post), new Promise((e, i) => {
-        s.call(this, t, (t, s, r) => {
-          t ? i(t) : e(s);
-        });
-      });
-    }
-    get(t) {
-      return this.send.call(this.env, t);
-    }
-    post(t) {
-      return this.send.call(this.env, t, "POST");
-    }
-  }
-  return new class {
-    constructor(t, e) {
-      this.name = t, this.http = new s(this), this.data = null, this.dataFile = "box.dat", this.logs = [], this.isMute = !1, this.isNeedRewrite = !1, this.logSeparator = "\n", this.startTime = new Date().getTime(), Object.assign(this, e), this.log("", `🔔${this.name}, 开始!`);
-    }
-    isNode() {
-      return "undefined" != typeof module && !!module.exports;
-    }
-    isQuanX() {
-      return "undefined" != typeof $task;
-    }
-    isSurge() {
-      return "undefined" != typeof $httpClient && "undefined" == typeof $loon;
-    }
-    isLoon() {
-      return "undefined" != typeof $loon;
-    }
-    toObj(t, e = null) {
+    let {
+      statusCode: _0x4f50c8,
+      headers: _0x4fdc35,
+      body: _0x4bfa21
+    } = _0x208a74;
+    if (_0x4bfa21) {
       try {
-        return JSON.parse(t);
-      } catch {
-        return e;
-      }
-    }
-    toStr(t, e = null) {
-      try {
-        return JSON.stringify(t);
-      } catch {
-        return e;
-      }
-    }
-    getjson(t, e) {
-      let s = e;
-      const i = this.getdata(t);
-      if (i) try {
-        s = JSON.parse(this.getdata(t));
+        _0x4bfa21 = JSON.parse(_0x4bfa21);
       } catch {}
-      return s;
     }
-    setjson(t, e) {
-      try {
-        return this.setdata(JSON.stringify(t), e);
-      } catch {
-        return !1;
-      }
-    }
-    getScript(t) {
-      return new Promise(e => {
-        this.get({
-          url: t
-        }, (t, s, i) => e(i));
-      });
-    }
-    runScript(t, e) {
-      return new Promise(s => {
-        let i = this.getdata("@chavy_boxjs_userCfgs.httpapi");
-        i = i ? i.replace(/\n/g, "").trim() : i;
-        let r = this.getdata("@chavy_boxjs_userCfgs.httpapi_timeout");
-        r = r ? 1 * r : 20, r = e && e.timeout ? e.timeout : r;
-        const [o, h] = i.split("@"),
-          n = {
-            url: `http://${h}/v1/scripting/evaluate`,
-            body: {
-              script_text: t,
-              mock_type: "cron",
-              timeout: r
-            },
-            headers: {
-              "X-Key": o,
-              Accept: "*/*"
-            }
-          };
-        this.post(n, (t, e, i) => s(i));
-      }).catch(t => this.logErr(t));
-    }
-    loaddata() {
-      if (!this.isNode()) return {};
-      {
-        this.fs = this.fs ? this.fs : require("fs"), this.path = this.path ? this.path : require("path");
-        const t = this.path.resolve(this.dataFile),
-          e = this.path.resolve(process.cwd(), this.dataFile),
-          s = this.fs.existsSync(t),
-          i = !s && this.fs.existsSync(e);
-        if (!s && !i) return {};
-        {
-          const i = s ? t : e;
-          try {
-            return JSON.parse(this.fs.readFileSync(i));
-          } catch (t) {
-            return {};
-          }
-        }
-      }
-    }
-    writedata() {
-      if (this.isNode()) {
-        this.fs = this.fs ? this.fs : require("fs"), this.path = this.path ? this.path : require("path");
-        const t = this.path.resolve(this.dataFile),
-          e = this.path.resolve(process.cwd(), this.dataFile),
-          s = this.fs.existsSync(t),
-          i = !s && this.fs.existsSync(e),
-          r = JSON.stringify(this.data);
-        s ? this.fs.writeFileSync(t, r) : i ? this.fs.writeFileSync(e, r) : this.fs.writeFileSync(t, r);
-      }
-    }
-    lodash_get(t, e, s) {
-      const i = e.replace(/\[(\d+)\]/g, ".$1").split(".");
-      let r = t;
-      for (const t of i) if (r = Object(r)[t], void 0 === r) return s;
-      return r;
-    }
-    lodash_set(t, e, s) {
-      return Object(t) !== t ? t : (Array.isArray(e) || (e = e.toString().match(/[^.[\]]+/g) || []), e.slice(0, -1).reduce((t, s, i) => Object(t[s]) === t[s] ? t[s] : t[s] = Math.abs(e[i + 1]) >> 0 == +e[i + 1] ? [] : {}, t)[e[e.length - 1]] = s, t);
-    }
-    getdata(t) {
-      let e = this.getval(t);
-      if (/^@/.test(t)) {
-        const [, s, i] = /^@(.*?)\.(.*?)$/.exec(t),
-          r = s ? this.getval(s) : "";
-        if (r) try {
-          const t = JSON.parse(r);
-          e = t ? this.lodash_get(t, i, "") : e;
-        } catch (t) {
-          e = "";
-        }
-      }
-      return e;
-    }
-    setdata(t, e) {
-      let s = !1;
-      if (/^@/.test(e)) {
-        const [, i, r] = /^@(.*?)\.(.*?)$/.exec(e),
-          o = this.getval(i),
-          h = i ? "null" === o ? null : o || "{}" : "{}";
-        try {
-          const e = JSON.parse(h);
-          this.lodash_set(e, r, t), s = this.setval(JSON.stringify(e), i);
-        } catch (e) {
-          const o = {};
-          this.lodash_set(o, r, t), s = this.setval(JSON.stringify(o), i);
-        }
-      } else s = this.setval(t, e);
-      return s;
-    }
-    getval(t) {
-      return this.isSurge() || this.isLoon() ? $persistentStore.read(t) : this.isQuanX() ? $prefs.valueForKey(t) : this.isNode() ? (this.data = this.loaddata(), this.data[t]) : this.data && this.data[t] || null;
-    }
-    setval(t, e) {
-      return this.isSurge() || this.isLoon() ? $persistentStore.write(t, e) : this.isQuanX() ? $prefs.setValueForKey(t, e) : this.isNode() ? (this.data = this.loaddata(), this.data[e] = t, this.writedata(), !0) : this.data && this.data[e] || null;
-    }
-    initGotEnv(t) {
-      this.got = this.got ? this.got : require("got"), this.cktough = this.cktough ? this.cktough : require("tough-cookie"), this.ckjar = this.ckjar ? this.ckjar : new this.cktough.CookieJar(), t && (t.headers = t.headers ? t.headers : {}, void 0 === t.headers.Cookie && void 0 === t.cookieJar && (t.cookieJar = this.ckjar));
-    }
-    get(t, e = () => {}) {
-      t.headers && (delete t.headers["Content-Type"], delete t.headers["Content-Length"]), this.isSurge() || this.isLoon() ? (this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
-        "X-Surge-Skip-Scripting": !1
-      })), $httpClient.get(t, (t, s, i) => {
-        !t && s && (s.body = i, s.statusCode = s.status), e(t, s, i);
-      })) : this.isQuanX() ? (this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, {
-        hints: !1
-      })), $task.fetch(t).then(t => {
-        const {
-          statusCode: s,
-          statusCode: i,
-          headers: r,
-          body: o
-        } = t;
-        e(null, {
-          status: s,
-          statusCode: i,
-          headers: r,
-          body: o
-        }, o);
-      }, t => e(t))) : this.isNode() && (this.initGotEnv(t), this.got(t).on("redirect", (t, e) => {
-        try {
-          if (t.headers["set-cookie"]) {
-            const s = t.headers["set-cookie"].map(this.cktough.Cookie.parse).toString();
-            s && this.ckjar.setCookieSync(s, null), e.cookieJar = this.ckjar;
-          }
-        } catch (t) {
-          this.logErr(t);
-        }
-      }).then(t => {
-        const {
-          statusCode: s,
-          statusCode: i,
-          headers: r,
-          body: o
-        } = t;
-        e(null, {
-          status: s,
-          statusCode: i,
-          headers: r,
-          body: o
-        }, o);
-      }, t => {
-        const {
-          message: s,
-          response: i
-        } = t;
-        e(s, i, i && i.body);
-      }));
-    }
-    post(t, e = () => {}) {
-      if (t.body && t.headers && !t.headers["Content-Type"] && (t.headers["Content-Type"] = "application/x-www-form-urlencoded"), t.headers && delete t.headers["Content-Length"], this.isSurge() || this.isLoon()) this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
-        "X-Surge-Skip-Scripting": !1
-      })), $httpClient.post(t, (t, s, i) => {
-        !t && s && (s.body = i, s.statusCode = s.status), e(t, s, i);
-      });else if (this.isQuanX()) t.method = "POST", this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, {
-        hints: !1
-      })), $task.fetch(t).then(t => {
-        const {
-          statusCode: s,
-          statusCode: i,
-          headers: r,
-          body: o
-        } = t;
-        e(null, {
-          status: s,
-          statusCode: i,
-          headers: r,
-          body: o
-        }, o);
-      }, t => e(t));else if (this.isNode()) {
-        this.initGotEnv(t);
-        const {
-          url: s,
-          ...i
-        } = t;
-        this.got.post(s, i).then(t => {
-          const {
-            statusCode: s,
-            statusCode: i,
-            headers: r,
-            body: o
-          } = t;
-          e(null, {
-            status: s,
-            statusCode: i,
-            headers: r,
-            body: o
-          }, o);
-        }, t => {
-          const {
-            message: s,
-            response: i
-          } = t;
-          e(s, i, i && i.body);
+    const _0x5d1199 = {
+      statusCode: _0x4f50c8,
+      headers: _0x4fdc35,
+      result: _0x4bfa21
+    };
+    return Promise.resolve(_0x5d1199);
+  }
+}
+let _0x280825 = _0x9d1851;
+try {
+  let _0x236d58 = require("./LocalBasic");
+  _0x280825 = _0x236d58;
+} catch {}
+let _0x3b1630 = new _0x280825(_0x49dfef);
+const {
+  exec
+} = require("child_process");
+const fs = require("fs");
+function execAsync(command) {
+  return new Promise((resolve, reject) => {
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve({
+          stdout,
+          stderr
         });
       }
+    });
+  });
+}
+class _0x3f433d extends _0x280825 {
+  constructor(_0x5669ce) {
+    super(_0x49dfef);
+    let _0x28f602 = _0x5669ce.split("#");
+    this.name = _0x28f602[0];
+    this.passwd = _0x28f602?.[1] || "";
+    this.uuid = [_0x49dfef.randomPattern("xxxxxxxx"), _0x49dfef.randomPattern("xxxx"), _0x49dfef.randomPattern("4xxx"), _0x49dfef.randomPattern("xxxx"), _0x49dfef.randomPattern("xxxxxxxxxxxx")];
+    this.cookieJar = new _0x4f58d7();
+    this.can_feed = true;
+    this.jml_tokenFlag = "";
+    this.mall_token = "";
+    this.logs = [];
+    this.got = this.got.extend({
+      cookieJar: this.cookieJar,
+      headers: {
+        Connection: "keep-alive",
+        "User-Agent": _0x3ed712
+      }
+    });
+  }
+  load_token() {
+    let _0x2f4a66 = false;
+    _0x1d3d6d[this.name] && (this.userId = _0x1d3d6d[this.name].userId, this.token = _0x1d3d6d[this.name].token, this.log("\u8BFB\u53D6\u5230\u7F13\u5B58token"), _0x2f4a66 = true);
+    return _0x2f4a66;
+  }
+  encode_phone() {
+    let _0xd2389f = this.name.split("");
+    for (let _0x51660a in _0xd2389f) {
+      _0xd2389f[_0x51660a] = String.fromCharCode(_0xd2389f[_0x51660a].charCodeAt(0) + 2);
     }
-    time(t, e = null) {
-      const s = e ? new Date(e) : new Date();
-      let i = {
-        "M+": s.getMonth() + 1,
-        "d+": s.getDate(),
-        "H+": s.getHours(),
-        "m+": s.getMinutes(),
-        "s+": s.getSeconds(),
-        "q+": Math.floor((s.getMonth() + 3) / 3),
-        S: s.getMilliseconds()
+    return _0xd2389f.join("");
+  }
+  encode_aes(_0x53e9bb) {
+    return _0x1519a6("AES", "ECB", "Pkcs7", _0x53e9bb, _0x75a069, 0);
+  }
+  get_mall_headers() {
+    return {
+      "Content-Type": "application/json;charset=utf-8",
+      Accept: "application/json, text/javascript, */*; q=0.01",
+      Authorization: this.mall_token ? "Bearer " + this.mall_token : "",
+      "X-Requested-With": "XMLHttpRequest"
+    };
+  }
+  async login(_0x2971d3 = {}) {
+    let _0x22cd07 = false;
+    try {
+      let _0x3ae9d0 = _0x49dfef.time("yyyyMMddhhmmss"),
+        _0x16bc9b = "iPhone 14 15.4." + this.uuid.slice(0, 2).join("") + this.name + _0x3ae9d0 + this.passwd + "0$$$0.",
+        _0x807c6e = {
+          fn: "login",
+          method: "post",
+          url: "https://appgologin.189.cn:9031/login/client/userLoginNormal",
+          json: {
+            headerInfos: {
+              code: "userLoginNormal",
+              timestamp: _0x3ae9d0,
+              broadAccount: "",
+              broadToken: "",
+              clientType: "#9.6.1#channel50#iPhone 14 Pro Max#",
+              shopId: "20002",
+              source: "110003",
+              sourcePassword: "Sid98s",
+              token: "",
+              userLoginName: this.name
+            },
+            content: {
+              attach: "test",
+              fieldData: {
+                loginType: "4",
+                accountType: "",
+                loginAuthCipherAsymmertric: _0x13a631.encrypt(_0x16bc9b, "base64"),
+                deviceUid: this.uuid.slice(0, 3).join(""),
+                phoneNum: this.encode_phone(),
+                isChinatelecom: "0",
+                systemVersion: "15.4.0",
+                authentication: this.passwd
+              }
+            }
+          }
+        },
+        {
+          result: _0x3cbd6a,
+          statusCode: _0x4338ff
+        } = await this.request(_0x807c6e),
+        _0x107431 = _0x49dfef.get(_0x3cbd6a?.["responseData"], "resultCode", -1);
+      if (_0x107431 == "0000") {
+        let {
+          userId = "",
+          token = ""
+        } = _0x3cbd6a?.["responseData"]?.["data"]?.["loginSuccessResult"] || {};
+        this.userId = userId;
+        this.token = token;
+        this.log("\u4F7F\u7528\u670D\u52A1\u5BC6\u7801\u767B\u5F55\u6210\u529F");
+        _0x1d3d6d[this.name] = {
+          token: token,
+          userId: userId,
+          t: Date.now()
+        };
+        _0x4e4355();
+        _0x22cd07 = true;
+      } else {
+        let _0xf8ba30 = _0x3cbd6a?.["msg"] || _0x3cbd6a?.["responseData"]?.["resultDesc"] || _0x3cbd6a?.["headerInfos"]?.["reason"] || "";
+        this.log("\u670D\u52A1\u5BC6\u7801\u767B\u5F55\u5931\u8D25[" + _0x107431 + "]: " + _0xf8ba30);
+      }
+    } catch (_0x576f6c) {
+      console.log(_0x576f6c);
+    } finally {
+      return _0x22cd07;
+    }
+  }
+  async get_ticket(_0x3e5067 = {}) {
+    let _0x252ee2 = "";
+    try {
+      let _0x21dd20 = "\n            <Request>\n                <HeaderInfos>\n                    <Code>getSingle</Code>\n                    <Timestamp>" + _0x49dfef.time("yyyyMMddhhmmss") + "</Timestamp>\n                    <BroadAccount></BroadAccount>\n                    <BroadToken></BroadToken>\n                    <ClientType>#9.6.1#channel50#iPhone 14 Pro Max#</ClientType>\n                    <ShopId>20002</ShopId>\n                    <Source>110003</Source>\n                    <SourcePassword>Sid98s</SourcePassword>\n                    <Token>" + this.token + "</Token>\n                    <UserLoginName>" + this.name + "</UserLoginName>\n                </HeaderInfos>\n                <Content>\n                    <Attach>test</Attach>\n                    <FieldData>\n                        <TargetId>" + _0x1519a6("TripleDES", "CBC", "Pkcs7", this.userId, _0x2304b1, _0x1110eb) + "</TargetId>\n                        <Url>4a6862274835b451</Url>\n                    </FieldData>\n                </Content>\n            </Request>";
+      const _0xb709e1 = {
+        fn: "get_ticket",
+        method: "post",
+        url: "https://appgologin.189.cn:9031/map/clientXML",
+        body: _0x21dd20
       };
-      /(y+)/.test(t) && (t = t.replace(RegExp.$1, (s.getFullYear() + "").substr(4 - RegExp.$1.length)));
-      for (let e in i) new RegExp("(" + e + ")").test(t) && (t = t.replace(RegExp.$1, 1 == RegExp.$1.length ? i[e] : ("00" + i[e]).substr(("" + i[e]).length)));
-      return t;
+      let {
+        result: _0x9f4220,
+        statusCode: _0x1e891f
+      } = await this.request(_0xb709e1);
+      if (_0x9f4220) {
+        let _0x18f397 = _0x9f4220.match(/\<Ticket\>(\w+)\<\/Ticket\>/);
+        if (_0x18f397) {
+          let _0x2c4653 = _0x18f397[1];
+          _0x252ee2 = _0x436a1e("TripleDES", "CBC", "Pkcs7", _0x2c4653, _0x2304b1, _0x1110eb);
+          this.ticket = _0x252ee2;
+        }
+      }
+      !_0x252ee2 && (!_0x3e5067.retry && (await this.login()) ? (_0x3e5067.retry = true, _0x252ee2 = await this.get_ticket(_0x3e5067)) : (this.log("\u6CA1\u6709\u83B7\u53D6\u5230ticket[" + _0x1e891f + "]: "), _0x9f4220 && this.log(": " + JSON.stringify(_0x9f4220))));
+    } catch (_0x1c9e54) {
+      console.log(_0x1c9e54);
+    } finally {
+      return _0x252ee2;
     }
-    msg(e = t, s = "", i = "", r) {
-      const o = t => {
-        if (!t) return t;
-        if ("string" == typeof t) return this.isLoon() ? t : this.isQuanX() ? {
-          "open-url": t
-        } : this.isSurge() ? {
-          url: t
-        } : void 0;
-        if ("object" == typeof t) {
-          if (this.isLoon()) {
-            let e = t.openUrl || t.url || t["open-url"],
-              s = t.mediaUrl || t["media-url"];
-            return {
-              openUrl: e,
-              mediaUrl: s
-            };
-          }
-          if (this.isQuanX()) {
-            let e = t["open-url"] || t.url || t.openUrl,
-              s = t["media-url"] || t.mediaUrl;
-            return {
-              "open-url": e,
-              "media-url": s
-            };
-          }
-          if (this.isSurge()) {
-            let e = t.url || t.openUrl || t["open-url"];
-            return {
-              url: e
-            };
-          }
+  }
+  async firstRequest() {
+    try {
+      const {
+        stdout,
+        stderr
+      } = await execAsync("python3 Ruishu.py");
+      if (stderr) {
+        console.error(`Error running Ruishu.py: ${stderr}`);
+        return null;
+      }
+      const cookies = JSON.parse(stdout);
+      const cookieString = Object.entries(cookies).map(([key, value]) => `${key}=${value}`).join("; ");
+      return cookieString;
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+      return null;
+    }
+  }
+  async get_sign(_0x9b96be = {}) {
+    const cookies = await this.firstRequest();
+    let _0x10c0cb = false;
+    try {
+      const _0x59fe75 = {
+        ticket: this.ticket
+      };
+      const _0x139dfe = {
+        fn: "login",
+        method: "get",
+        url: "https://wapside.189.cn:9001/jt-sign/ssoHomLogin",
+        searchParams: _0x59fe75,
+        headers: {
+          Cookie: cookies
         }
       };
-      if (this.isMute || (this.isSurge() || this.isLoon() ? $notification.post(e, s, i, o(r)) : this.isQuanX() && $notify(e, s, i, o(r))), !this.isMuteLog) {
-        let t = ["", "==============\uD83D\uDCE3\u7CFB\u7EDF\u901A\u77E5\uD83D\uDCE3=============="];
-        t.push(e), s && t.push(s), i && t.push(i), console.log(t.join("\n")), this.logs = this.logs.concat(t);
+      let {
+          result: _0x36bbb6,
+          statusCode: _0x3a8945
+        } = await this.request(_0x139dfe),
+        _0xe3542d = _0x49dfef.get(_0x36bbb6, "resoultCode", _0x3a8945);
+      _0xe3542d == 0 ? (_0x10c0cb = _0x36bbb6?.["sign"], this.sign = _0x10c0cb, this.got = this.got.extend({
+        headers: {
+          sign: this.sign
+        }
+      })) : this.log("\u83B7\u53D6sign\u5931\u8D25[" + _0xe3542d + "]: " + _0x36bbb6);
+    } catch (_0x44161f) {
+      console.log(_0x44161f);
+    } finally {
+      return _0x10c0cb;
+    }
+  }
+  encrypt_para(_0x217db5) {
+    let _0x1c768f = typeof _0x217db5 == "string" ? _0x217db5 : JSON.stringify(_0x217db5);
+    return _0x47bb4b.encrypt(_0x1c768f, "hex");
+  }
+  async userCoinInfo(_0x3a27b0 = false, _0x2a9f2e = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x314c14 = {
+        phone: this.name
+      };
+      let _0x55424b = {
+          fn: "userCoinInfo",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/api/home/userCoinInfo",
+          json: {
+            para: this.encrypt_para(_0x314c14)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x18ad00,
+          statusCode: _0x3e695c
+        } = await this.request(_0x55424b),
+        _0x474131 = _0x49dfef.get(_0x18ad00, "resoultCode", _0x3e695c);
+      if (_0x474131 == 0) {
+        this.coin = _0x18ad00?.["totalCoin"] || 0;
+        if (_0x3a27b0) {
+          const _0x3a5985 = {
+            notify: true
+          };
+          this.log("\u91D1\u8C46\u4F59\u989D: " + this.coin, _0x3a5985);
+          if (_0x18ad00.amountEx) {
+            let _0x5b7bde = _0x49dfef.time("yyyy-MM-dd", _0x18ad00.expireDate);
+            const _0x359049 = {
+              notify: true
+            };
+            _0x49dfef.log("\n======= \u8D26\u53F7[" + this.index + "][" + this.name + "]--[" + _0x5b7bde + "]--\u8FD1\u671F\u5C06\u8FC7\u671F" + _0x18ad00.amountEx + "\u91D1\u8C46\n", _0x359049);
+          }
+        }
+      } else {
+        let _0x4e7123 = _0x18ad00?.["msg"] || _0x18ad00?.["resoultMsg"] || _0x18ad00?.["error"] || "";
+        this.log("\u67E5\u8BE2\u8D26\u6237\u91D1\u8C46\u4F59\u989D\u9519\u8BEF[" + _0x474131 + "]: " + _0x4e7123);
+      }
+    } catch (_0x4d1b75) {
+      console.log(_0x4d1b75);
+    }
+  }
+  async userStatusInfo(_0x10c627 = {}) {
+    try {
+      const _0x34621e = {
+        phone: this.name
+      };
+      let _0x16b897 = {
+        fn: "userStatusInfo",
+        method: "post",
+        url: "https://wapside.189.cn:9001/jt-sign/api/home/userStatusInfo",
+        json: {
+          para: this.encrypt_para(_0x34621e)
+        }
+      };
+
+      // 第一次请求
+      {
+        const cookies = await this.firstRequest();
+        _0x16b897.headers = {
+          Cookie: cookies
+        };
+        let {
+            result: _0x39cfe5,
+            statusCode: _0x5e556e
+          } = await this.request(_0x49dfef.copy(_0x16b897)),
+          _0x509ab0 = _0x49dfef.get(_0x39cfe5, "resoultCode", _0x5e556e);
+        if (_0x509ab0 == 0) {
+          let {
+            isSign: _0x1d403c
+          } = _0x39cfe5?.["data"];
+          _0x1d403c ? this.log("\u4ECA\u5929\u5DF2\u7B7E\u5230") : await this.doSign();
+        } else {
+          let _0x11bda2 = _0x39cfe5?.["msg"] || _0x39cfe5?.["resoultMsg"] || _0x39cfe5?.["error"] || "";
+          this.log("\u67E5\u8BE2\u8D26\u6237\u7B7E\u5230\u72B6\u6001\u9519\u8BEF[" + _0x509ab0 + "]: " + _0x11bda2);
+        }
+      }
+
+      // 第二次请求
+      {
+        const cookies = await this.firstRequest();
+        _0x16b897.headers = {
+          Cookie: cookies
+        };
+        let {
+            result: _0xf4c969,
+            statusCode: _0x34b777
+          } = await this.request(_0x49dfef.copy(_0x16b897)),
+          _0x4d9c85 = _0x49dfef.get(_0xf4c969, "resoultCode", _0x34b777);
+        if (_0x4d9c85 == 0) {
+          let {
+            continuousDay: _0x33365d,
+            signDay: _0x128cf2,
+            isSeven: _0x3fa455
+          } = _0xf4c969?.["data"];
+          this.log("\u5DF2\u7B7E\u5230" + _0x128cf2 + "\u5929, \u8FDE\u7B7E" + _0x33365d + "\u5929");
+          _0x3fa455 && (await this.exchangePrize());
+        } else {
+          let _0xc36b81 = _0xf4c969?.["msg"] || _0xf4c969?.["resoultMsg"] || _0xf4c969?.["error"] || "";
+          this.log("\u67E5\u8BE2\u8D26\u6237\u7B7E\u5230\u72B6\u6001\u9519\u8BEF[" + _0x4d9c85 + "]: " + _0xc36b81);
+        }
+      }
+    } catch (_0x103f04) {
+      console.log(_0x103f04);
+    }
+  }
+  async continueSignDays(_0x3e553e = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x6a3b38 = {
+        phone: this.name
+      };
+      let _0x215fff = {
+          fn: "continueSignDays",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/webSign/continueSignDays",
+          json: {
+            para: this.encrypt_para(_0x6a3b38)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x6e6187,
+          statusCode: _0x257d59
+        } = await this.request(_0x215fff),
+        _0x912371 = _0x49dfef.get(_0x6e6187, "resoultCode", _0x257d59);
+      if (_0x912371 == 0) {
+        this.log("\u62BD\u5956\u8FDE\u7B7E\u5929\u6570: " + (_0x6e6187?.["continueSignDays"] || 0) + "\u5929");
+        if (_0x6e6187?.["continueSignDays"] == 15) {
+          const _0x207b02 = {
+            type: "15"
+          };
+          await this.exchangePrize(_0x207b02);
+        } else {
+          if (_0x6e6187?.["continueSignDays"] == 28) {
+            const _0x1f691c = {
+              type: "28"
+            };
+            await this.exchangePrize(_0x1f691c);
+          }
+        }
+      } else {
+        let _0x311a52 = _0x6e6187?.["msg"] || _0x6e6187?.["resoultMsg"] || _0x6e6187?.["error"] || "";
+        this.log("\u67E5\u8BE2\u62BD\u5956\u8FDE\u7B7E\u5929\u6570\u9519\u8BEF[" + _0x912371 + "]: " + _0x311a52);
+      }
+    } catch (_0xfe7972) {
+      console.log(_0xfe7972);
+    }
+  }
+  async continueSignRecords(_0x716c04 = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x47b502 = {
+        phone: this.name
+      };
+      let _0x3db199 = {
+          fn: "continueSignRecords",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/webSign/continueSignRecords",
+          json: {
+            para: this.encrypt_para(_0x47b502)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0xcdce9f,
+          statusCode: _0x167568
+        } = await this.request(_0x3db199),
+        _0xd160b5 = _0x49dfef.get(_0xcdce9f, "resoultCode", _0x167568);
+      if (_0xd160b5 == 0) {
+        if (_0xcdce9f?.["continue15List"]?.["length"]) {
+          const _0x4ddf3a = {
+            type: "15"
+          };
+          await this.exchangePrize(_0x4ddf3a);
+        }
+        if (_0xcdce9f?.["continue28List"]?.["length"]) {
+          const _0x24d413 = {
+            type: "28"
+          };
+          await this.exchangePrize(_0x24d413);
+        }
+      } else {
+        let _0xa1a8c7 = _0xcdce9f?.["msg"] || _0xcdce9f?.["resoultMsg"] || _0xcdce9f?.["error"] || "";
+        this.log("\u67E5\u8BE2\u8FDE\u7B7E\u62BD\u5956\u72B6\u6001\u9519\u8BEF[" + _0xd160b5 + "]: " + _0xa1a8c7);
+      }
+    } catch (_0x696f49) {
+      console.log(_0x696f49);
+    }
+  }
+  async doSign(_0x3d1e97 = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      let _0x2c6ae2 = {
+          phone: this.name,
+          date: Date.now(),
+          sysType: "20002"
+        },
+        _0x32b4a2 = {
+          fn: "doSign",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/webSign/sign",
+          json: {
+            encode: this.encode_aes(JSON.stringify(_0x2c6ae2))
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x4a380a,
+          statusCode: _0x39f295
+        } = await this.request(_0x32b4a2),
+        _0x66dfe4 = _0x49dfef.get(_0x4a380a, "resoultCode", _0x39f295);
+      if (_0x66dfe4 == 0) {
+        let _0x3199d0 = _0x49dfef.get(_0x4a380a?.["data"], "code", -1);
+        if (_0x3199d0 == 1) {
+          const _0x241cc1 = {
+            notify: true
+          };
+          this.log("\u7B7E\u5230\u6210\u529F\uFF0C\u83B7\u5F97" + (_0x4a380a?.["data"]?.["coin"] || 0) + "\u91D1\u8C46", _0x241cc1);
+          await this.userStatusInfo();
+        } else {
+          const _0x16b3bf = {
+            notify: true
+          };
+          this.log("\u7B7E\u5230\u5931\u8D25[" + _0x3199d0 + "]: " + _0x4a380a.data.msg, _0x16b3bf);
+        }
+      } else {
+        let _0x48eddc = _0x4a380a?.["msg"] || _0x4a380a?.["resoultMsg"] || _0x4a380a?.["error"] || "";
+        this.log("\u7B7E\u5230\u9519\u8BEF[" + _0x66dfe4 + "]: " + _0x48eddc);
+      }
+    } catch (_0x3c07a4) {
+      console.log(_0x3c07a4);
+    }
+  }
+  async exchangePrize(_0x503199 = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      let _0x15d8af = _0x49dfef.pop(_0x503199, "type", "7");
+      const _0x247865 = {
+        phone: this.name,
+        type: _0x15d8af
+      };
+      let _0x275dee = {
+          fn: "exchangePrize",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/webSign/exchangePrize",
+          json: {
+            para: this.encrypt_para(_0x247865)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x122edb,
+          statusCode: _0x7493f8
+        } = await this.request(_0x275dee),
+        _0x32ecff = _0x49dfef.get(_0x122edb, "resoultCode", _0x7493f8);
+      if (_0x32ecff == 0) {
+        let _0xfbfebb = _0x49dfef.get(_0x122edb?.["prizeDetail"], "code", -1);
+        if (_0xfbfebb == 0) {
+          const _0x51aac0 = {
+            notify: true
+          };
+          this.log("\u8FDE\u7B7E" + _0x15d8af + "\u5929\u62BD\u5956: " + _0x122edb?.["prizeDetail"]?.["biz"]?.["winTitle"], _0x51aac0);
+        } else {
+          let _0x36ea79 = _0x122edb?.["prizeDetail"]?.["err"] || "";
+          const _0x513b8a = {
+            notify: true
+          };
+          this.log("\u8FDE\u7B7E" + _0x15d8af + "\u5929\u62BD\u5956\u5931\u8D25[" + _0xfbfebb + "]: " + _0x36ea79, _0x513b8a);
+        }
+      } else {
+        let _0x2f0e88 = _0x122edb?.["msg"] || _0x122edb?.["resoultMsg"] || _0x122edb?.["error"] || "";
+        this.log("\u8FDE\u7B7E" + _0x15d8af + "\u5929\u62BD\u5956\u9519\u8BEF[" + _0x32ecff + "]: " + _0x2f0e88);
+      }
+    } catch (_0x57662f) {
+      console.log(_0x57662f);
+    }
+  }
+  async homepage(_0x5a7e8f, _0x26d9a1 = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x1d3d49 = {
+        phone: this.name,
+        shopId: "20001",
+        type: _0x5a7e8f
+      };
+      let _0x5a9f66 = {
+          fn: "homepage",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/webSign/homepage",
+          json: {
+            para: this.encrypt_para(_0x1d3d49)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x3462ae,
+          statusCode: _0x17c9d0
+        } = await this.request(_0x5a9f66),
+        _0x59fe3c = _0x49dfef.get(_0x3462ae, "resoultCode", _0x17c9d0);
+      if (_0x59fe3c == 0) {
+        let _0x52a59b = _0x49dfef.get(_0x3462ae?.["data"]?.["head"], "code", -1);
+        if (_0x52a59b == 0) {
+          for (let _0x3e6107 of _0x3462ae?.["data"]?.["biz"]?.["adItems"] || []) {
+            if (["0", "1"].includes(_0x3e6107?.["taskState"])) {
+              switch (_0x3e6107.contentOne) {
+                case "3":
+                  {
+                    if (_0x3e6107?.["rewardId"]) {
+                      await this.receiveReward(_0x3e6107);
+                    }
+                    break;
+                  }
+                case "5":
+                  {
+                    await this.openMsg(_0x3e6107);
+                    break;
+                  }
+                case "6":
+                  {
+                    await this.sharingGetGold();
+                    break;
+                  }
+                case "10":
+                case "13":
+                  {
+                    if (!this.xtoken) {
+                      await this.get_usercode();
+                    }
+                    this.xtoken && (await this.watchLiveInit());
+                    break;
+                  }
+                case "18":
+                  {
+                    await this.polymerize(_0x3e6107);
+                    break;
+                  }
+                default:
+                  {
+                    break;
+                  }
+              }
+            }
+          }
+        } else {
+          let _0xf9bca1 = _0x3462ae?.["data"]?.["head"]?.["err"] || "";
+          this.log("\u83B7\u53D6\u4EFB\u52A1\u5217\u8868\u5931\u8D25[" + _0x52a59b + "]: " + _0xf9bca1);
+        }
+      } else {
+        this.log("\u83B7\u53D6\u4EFB\u52A1\u5217\u8868\u9519\u8BEF[" + _0x59fe3c + "]");
+      }
+    } catch (_0x1713d1) {
+      console.log(_0x1713d1);
+    }
+  }
+  async receiveReward(_0x1f06a0, _0x27d046 = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      let _0x408e82 = _0x1f06a0?.["title"]?.["split"](" ")?.[0];
+      const _0x1205c1 = {
+        phone: this.name,
+        rewardId: _0x1f06a0?.["rewardId"] || ""
+      };
+      let _0x4db2f8 = {
+          fn: "receiveReward",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/paradise/receiveReward",
+          json: {
+            para: this.encrypt_para(_0x1205c1)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x514940,
+          statusCode: _0x5641f8
+        } = await this.request(_0x4db2f8),
+        _0x1559d6 = _0x49dfef.get(_0x514940, "resoultCode", _0x5641f8);
+      if (_0x1559d6 == 0) {
+        this.log("\u9886\u53D6\u4EFB\u52A1[" + _0x408e82 + "]\u5956\u52B1\u6210\u529F: " + _0x514940?.["resoultMsg"]);
+      } else {
+        let _0xa69dbc = _0x514940?.["msg"] || _0x514940?.["resoultMsg"] || _0x514940?.["error"] || "";
+        this.log("\u9886\u53D6\u4EFB\u52A1[" + _0x408e82 + "]\u5956\u52B1\u9519\u8BEF[" + _0x1559d6 + "]: " + _0xa69dbc);
+      }
+    } catch (_0x2a40e0) {
+      console.log(_0x2a40e0);
+    }
+  }
+  async openMsg(_0x51c539, _0x46c92d = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      let _0x4b897b = _0x51c539?.["title"]?.["split"](" ")?.[0];
+      const _0x2aab67 = {
+        phone: this.name
+      };
+      let _0x1c217b = {
+          fn: "openMsg",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/paradise/openMsg",
+          json: {
+            para: this.encrypt_para(_0x2aab67)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0xb6f7bf,
+          statusCode: _0x41e108
+        } = await this.request(_0x1c217b),
+        _0x1377ff = _0x49dfef.get(_0xb6f7bf, "resoultCode", _0x41e108);
+      if (_0x1377ff == 0) {
+        this.log("\u5B8C\u6210\u4EFB\u52A1[" + _0x4b897b + "]\u6210\u529F: " + _0xb6f7bf?.["resoultMsg"]);
+      } else {
+        let _0x59d65d = _0xb6f7bf?.["msg"] || _0xb6f7bf?.["resoultMsg"] || _0xb6f7bf?.["error"] || "";
+        this.log("\u5B8C\u6210\u4EFB\u52A1[" + _0x4b897b + "]\u9519\u8BEF[" + _0x1377ff + "]: " + _0x59d65d);
+      }
+    } catch (_0x574cb0) {
+      console.log(_0x574cb0);
+    }
+  }
+  async polymerize(_0x2beade, _0x3610fd = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      let _0x27bccc = _0x2beade?.["title"]?.["split"](" ")?.[0];
+      const _0x128b55 = {
+        phone: this.name,
+        jobId: _0x2beade.taskId
+      };
+      let _0x493039 = {
+          fn: "polymerize",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/webSign/polymerize",
+          json: {
+            para: this.encrypt_para(_0x128b55)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x2c3e91,
+          statusCode: _0x3c5244
+        } = await this.request(_0x493039),
+        _0x43d9c9 = _0x49dfef.get(_0x2c3e91, "resoultCode", _0x3c5244);
+      if (_0x43d9c9 == 0) {
+        this.log("\u5B8C\u6210\u4EFB\u52A1[" + _0x27bccc + "]\u6210\u529F: " + _0x2c3e91?.["resoultMsg"]);
+      } else {
+        let _0x402f9a = _0x2c3e91?.["msg"] || _0x2c3e91?.["resoultMsg"] || _0x2c3e91?.["error"] || "";
+
+        // 检查是否是无权限错误
+        if (_0x402f9a.includes("\u60A8\u65E0\u6B64\u6743\u9650")) {
+          this.log("\u68C0\u6D4B\u5230\u65E0\u6743\u9650\u9519\u8BEF\uFF0C\u91CD\u65B0\u83B7\u53D6sign...");
+          await this.get_sign(); // 重新获取sign
+          this.log("\u91CD\u65B0\u83B7\u53D6sign\u6210\u529F\uFF0C\u7EE7\u7EED\u5B8C\u6210\u4EFB\u52A1...");
+          return this.polymerize(_0x2beade, _0x3610fd); // 重新调用polymerize方法
+        }
+        this.log("\u5B8C\u6210\u4EFB\u52A1[" + _0x27bccc + "]\u9519\u8BEF[" + _0x43d9c9 + "]: " + _0x402f9a);
+      }
+    } catch (_0xc860ab) {
+      console.log(_0xc860ab);
+    }
+  }
+  async food(_0x7cbaa1, _0x4b0ab1 = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x564080 = {
+        phone: this.name
+      };
+      let _0x587fa4 = {
+          fn: "food",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/paradise/food",
+          json: {
+            para: this.encrypt_para(_0x564080)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x156b8d,
+          statusCode: _0x191b9d
+        } = await this.request(_0x587fa4),
+        _0x117b58 = _0x49dfef.get(_0x156b8d, "resoultCode", _0x191b9d);
+      if (_0x117b58 == 0) {
+        this.log("\u7B2C" + _0x7cbaa1 + "\u6B21\u5582\u98DF: " + (_0x156b8d?.["resoultMsg"] || "\u6210\u529F"));
+        if (_0x156b8d?.["levelUp"]) {
+          let _0x265b8d = _0x156b8d?.["currLevelRightList"][0]?.["level"];
+          const _0x2eec5b = {
+            notify: true
+          };
+          this.log("\u5BA0\u7269\u5DF2\u5347\u7EA7\u5230[LV." + _0x265b8d + "], \u83B7\u5F97: " + _0x156b8d?.["currLevelRightList"][0]?.["righstName"], _0x2eec5b);
+        }
+      } else {
+        let _0x14117b = _0x156b8d?.["msg"] || _0x156b8d?.["resoultMsg"] || _0x156b8d?.["error"] || "";
+
+        // 检查是否是无权限错误
+        if (_0x14117b.includes("\u60A8\u65E0\u6B64\u6743\u9650")) {
+          this.log("\u68C0\u6D4B\u5230\u65E0\u6743\u9650\u9519\u8BEF\uFF0C\u91CD\u65B0\u83B7\u53D6sign...");
+          await this.get_sign(); // 重新获取sign
+          this.log("\u91CD\u65B0\u83B7\u53D6sign\u6210\u529F\uFF0C\u7EE7\u7EED\u5B8C\u6210\u4EFB\u52A1...");
+          return this.food(_0x7cbaa1, _0x4b0ab1); // 重新调用food方法
+        }
+        this.log("\u7B2C" + _0x7cbaa1 + "\u6B21\u5582\u98DF\u5931\u8D25[" + _0x117b58 + "]: " + _0x14117b);
+        _0x14117b?.["includes"]("\u6700\u5927\u5582\u98DF\u6B21\u6570") && (this.can_feed = false);
+      }
+    } catch (_0x523284) {
+      console.log(_0x523284);
+    }
+  }
+  async getParadiseInfo(_0x4c16d3 = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x1138c3 = {
+        phone: this.name
+      };
+      let _0x2d8a6c = {
+        fn: "getParadiseInfo",
+        method: "post",
+        url: "https://wapside.189.cn:9001/jt-sign/paradise/getParadiseInfo",
+        json: {
+          para: this.encrypt_para(_0x1138c3)
+        },
+        headers: {
+          Cookie: cookies
+        }
+      };
+
+      // 第一次请求
+      {
+        const cookies = await this.firstRequest();
+        _0x2d8a6c.headers = {
+          Cookie: cookies
+        };
+        let {
+            result: _0x13b7df,
+            statusCode: _0x1e6dfd
+          } = await this.request(_0x2d8a6c),
+          _0x54514a = _0x49dfef.get(_0x13b7df, "resoultCode", _0x1e6dfd);
+        if (_0x54514a == 0) {
+          let _0xdb66c = _0x13b7df?.["userInfo"]?.["levelInfoMap"];
+          this.level = _0xdb66c?.["level"];
+          for (let _0x33d3a3 = 1; _0x33d3a3 <= 10 && this.can_feed; _0x33d3a3++) {
+            await this.food(_0x33d3a3);
+          }
+        } else {
+          let _0x4e4dd5 = _0x13b7df?.["msg"] || _0x13b7df?.["resoultMsg"] || _0x13b7df?.["error"] || "";
+          this.log("\u67E5\u8BE2\u5BA0\u7269\u7B49\u7EA7\u5931\u8D25[" + _0x54514a + "]: " + _0x4e4dd5);
+          return;
+        }
+      }
+
+      // 第二次请求
+      {
+        const cookies = await this.firstRequest();
+        _0x2d8a6c.headers = {
+          Cookie: cookies
+        };
+        let {
+            result: _0x1334dd,
+            statusCode: _0x363378
+          } = await this.request(_0x2d8a6c),
+          _0xf71230 = _0x49dfef.get(_0x1334dd, "resoultCode", _0x363378);
+        if (_0xf71230 == 0) {
+          let _0x41df23 = _0x1334dd?.["userInfo"]?.["levelInfoMap"];
+          this.level = _0x41df23?.["level"];
+          const _0x268241 = {
+            notify: true
+          };
+          this.log("\u5BA0\u7269\u7B49\u7EA7[Lv." + _0x41df23?.["level"] + "], \u5347\u7EA7\u8FDB\u5EA6: " + _0x41df23?.["growthValue"] + "/" + _0x41df23?.["fullGrowthCoinValue"], _0x268241);
+        } else {
+          let _0x1036a5 = _0x1334dd?.["msg"] || _0x1334dd?.["resoultMsg"] || _0x1334dd?.["error"] || "";
+          this.log("\u67E5\u8BE2\u5BA0\u7269\u7B49\u7EA7\u5931\u8D25[" + _0xf71230 + "]: " + _0x1036a5);
+          return;
+        }
+      }
+    } catch (_0x94c5b4) {
+      console.log(_0x94c5b4);
+    }
+  }
+  async getLevelRightsList(_0x3ea0a7 = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x166dba = {
+        phone: this.name
+      };
+      let _0x5a0971 = {
+          fn: "getLevelRightsList",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/paradise/getLevelRightsList",
+          json: {
+            para: this.encrypt_para(_0x166dba)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x4cf13d,
+          statusCode: _0x5e92a4
+        } = await this.request(_0x5a0971);
+      if (_0x4cf13d?.["currentLevel"]) {
+        let _0x3b50bb = _0x4cf13d?.["currentLevel"] || 6,
+          _0x1f1006 = false,
+          _0x53ddf4 = "V" + _0x3b50bb;
+        for (let _0x1ab325 of _0x4cf13d[_0x53ddf4] || []) {
+          let _0x59ef49 = _0x1ab325?.["righstName"] || "";
+          if (this.coin < _0x1ab325.costCoin) {
+            continue;
+          }
+          (_0x59ef49?.["match"](/\d+元话费/) || _0x59ef49?.["match"](/专享\d+金豆/)) && (await this.getConversionRights(_0x1ab325, _0x1f1006)) && (_0x1f1006 = true);
+        }
+      } else {
+        let _0x4ff776 = _0x4cf13d?.["msg"] || _0x4cf13d?.["resoultMsg"] || _0x4cf13d?.["error"] || "";
+        this.log("\u67E5\u8BE2\u5BA0\u7269\u5151\u6362\u6743\u76CA\u5931\u8D25: " + _0x4ff776);
+      }
+    } catch (_0xcfd2ba) {
+      console.log(_0xcfd2ba);
+    }
+  }
+  async getConversionRights(_0xca19ef, _0x28066a, _0x21f772 = {}) {
+    const cookies = await this.firstRequest();
+    let _0x21db60 = false;
+    try {
+      let _0x5d6f72 = _0xca19ef?.["righstName"] || "";
+      const _0x714d7a = {
+        phone: this.name,
+        rightsId: _0xca19ef.id,
+        receiveCount: _0xca19ef.receiveType
+      };
+      let _0x5ed3b5 = {
+          fn: "getConversionRights",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/paradise/getConversionRights",
+          json: {
+            para: this.encrypt_para(_0x714d7a)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x409ea1,
+          statusCode: _0x3fb426
+        } = await this.request(_0x5ed3b5),
+        _0x17b3d0 = _0x49dfef.get(_0x409ea1, "code", _0x49dfef.get(_0x409ea1, "resoultCode", _0x3fb426));
+      if (_0x17b3d0 == 200) {
+        if (!(_0x409ea1?.["rightsStatus"]?.["includes"]("\u5DF2\u5151\u6362") || _0x409ea1?.["rightsStatus"]?.["includes"]("\u5DF2\u9886\u53D6"))) {
+          _0x21db60 = true;
+          if (_0x28066a) {
+            await _0x49dfef.wait(3000);
+          }
+          await this.conversionRights(_0xca19ef);
+        }
+      } else {
+        let _0x267dcb = _0x409ea1?.["msg"] || _0x409ea1?.["resoultMsg"] || _0x409ea1?.["error"] || "";
+        this.log("\u67E5\u8BE2\u6743\u76CA[" + _0x5d6f72 + "]\u5931\u8D25[" + _0x17b3d0 + "]: " + _0x267dcb);
+      }
+    } catch (_0x1c9805) {
+      console.log(_0x1c9805);
+    } finally {
+      return _0x21db60;
+    }
+  }
+  async conversionRights(_0x1258fb, _0x5ee37a = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      let _0x285002 = _0x1258fb?.["righstName"] || "";
+      const _0x3ba559 = {
+        phone: this.name,
+        rightsId: _0x1258fb.id
+      };
+      let _0x259df8 = {
+          fn: "conversionRights",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/paradise/conversionRights",
+          json: {
+            para: this.encrypt_para(_0x3ba559)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x24b720,
+          statusCode: _0x2867ce
+        } = await this.request(_0x259df8),
+        _0x1caee2 = _0x49dfef.get(_0x24b720, "resoultCode", _0x2867ce);
+      if (_0x1caee2 == 0) {
+        this.log("\u5151\u6362\u6743\u76CA[" + _0x285002 + "]\u6210\u529F");
+      } else {
+        let _0x58c8d6 = _0x24b720?.["msg"] || _0x24b720?.["resoultMsg"] || _0x24b720?.["error"] || "";
+        this.log("\u5151\u6362\u6743\u76CA[" + _0x285002 + "]\u5931\u8D25[" + _0x1caee2 + "]: " + _0x58c8d6);
+      }
+    } catch (_0x2f6eb8) {
+      console.log(_0x2f6eb8);
+    }
+  }
+  async get_usercode(_0x410326 = {}) {
+    try {
+      const _0x4ad8d0 = {
+        fn: "get_usercode",
+        method: "get",
+        url: "https://xbk.189.cn/xbkapi/api/auth/jump",
+        searchParams: {}
+      };
+      _0x4ad8d0.searchParams.userID = this.ticket;
+      _0x4ad8d0.searchParams.version = "9.3.3";
+      _0x4ad8d0.searchParams.type = "room";
+      _0x4ad8d0.searchParams.l = "renwu";
+      let {
+          statusCode: _0x1897af,
+          headers: _0xab67f2
+        } = await this.request(_0x4ad8d0),
+        _0x40ae2f = _0xab67f2?.["location"]?.["match"](/usercode=(\w+)/);
+      _0x40ae2f ? await this.codeToken(_0x40ae2f[1]) : this.log("\u83B7\u53D6code\u5931\u8D25[" + _0x1897af + "]");
+    } catch (_0x3b0319) {
+      console.log(_0x3b0319);
+    }
+  }
+  async codeToken(_0x5551c8, _0x4c3418 = {}) {
+    try {
+      const _0x3ed11c = {
+        usercode: _0x5551c8
+      };
+      const _0x3382ca = {
+        fn: "codeToken",
+        method: "post",
+        url: "https://xbk.189.cn/xbkapi/api/auth/userinfo/codeToken",
+        json: _0x3ed11c
+      };
+      let {
+          result: _0x1e1031,
+          statusCode: _0x4829ec
+        } = await this.request(_0x3382ca),
+        _0xb6579f = _0x49dfef.get(_0x1e1031, "code", -1);
+      if (_0xb6579f == 0) {
+        this.xtoken = _0x1e1031?.["data"]?.["token"];
+        this.got = this.got.extend({
+          headers: {
+            Authorization: "Bearer " + _0x5b4189.encrypt(this.xtoken, "base64")
+          }
+        });
+      } else {
+        let _0x2cb0f8 = _0x1e1031?.["msg"] || _0x1e1031?.["resoultMsg"] || _0x1e1031?.["error"] || _0x1e1031?.["msg"] || "";
+        this.log("\u83B7\u53D6token\u5931\u8D25[" + _0xb6579f + "]: " + _0x2cb0f8);
+      }
+    } catch (_0x324945) {
+      console.log(_0x324945);
+    }
+  }
+  async watchLiveInit(_0x410248 = {}) {
+    try {
+      let _0x28a798 = Math.floor(Math.random() * 1000) + 1000;
+      const _0x1e7374 = {
+        period: 1,
+        liveId: _0x28a798
+      };
+      const _0x10ad21 = {
+        fn: "watchLiveInit",
+        method: "post",
+        url: "https://xbk.189.cn/xbkapi/lteration/liveTask/index/watchLiveInit",
+        json: _0x1e7374
+      };
+      let {
+          result: _0x15080d,
+          statusCode: _0x39b570
+        } = await this.request(_0x10ad21),
+        _0x488aa2 = _0x49dfef.get(_0x15080d, "code", -1);
+      if (_0x488aa2 == 0) {
+        await _0x49dfef.wait(15000);
+        await this.watchLive(_0x28a798, _0x15080d?.["data"]);
+      } else {
+        let _0x641985 = _0x15080d?.["msg"] || _0x15080d?.["resoultMsg"] || _0x15080d?.["error"] || _0x15080d?.["msg"] || "";
+        this.log("\u5F00\u59CB\u89C2\u770B\u76F4\u64AD[" + _0x28a798 + "]\u5931\u8D25[" + _0x488aa2 + "]: " + _0x641985);
+      }
+    } catch (_0x58939a) {
+      console.log(_0x58939a);
+    }
+  }
+  async watchLive(_0x2df12e, _0x578beb, _0x1de0d1 = {}) {
+    try {
+      const _0xae75fa = {
+        period: 1,
+        liveId: _0x2df12e,
+        key: _0x578beb
+      };
+      const _0x511e74 = {
+        fn: "watchLive",
+        method: "post",
+        url: "https://xbk.189.cn/xbkapi/lteration/liveTask/index/watchLive",
+        json: _0xae75fa
+      };
+      let {
+          result: _0x5c4954,
+          statusCode: _0x1ad01d
+        } = await this.request(_0x511e74),
+        _0x4e4cbf = _0x49dfef.get(_0x5c4954, "code", -1);
+      if (_0x4e4cbf == 0) {
+        this.log("\u89C2\u770B\u76F4\u64AD[" + _0x2df12e + "]\u6210\u529F");
+        await this.watchLiveInit();
+      } else {
+        let _0x132d1d = _0x5c4954?.["msg"] || _0x5c4954?.["resoultMsg"] || _0x5c4954?.["error"] || _0x5c4954?.["msg"] || "";
+        this.log("\u89C2\u770B\u76F4\u64AD[" + _0x2df12e + "]\u5931\u8D25[" + _0x4e4cbf + "]: " + _0x132d1d);
+      }
+    } catch (_0x32ce3f) {
+      console.log(_0x32ce3f);
+    }
+  }
+  async watchVideo(_0x37b577, _0x3a94a2 = {}) {
+    try {
+      const _0x15cc23 = {
+        articleId: _0x37b577
+      };
+      const _0x61e8d7 = {
+        fn: "watchVideo",
+        method: "post",
+        url: "https://xbk.189.cn/xbkapi/lteration/liveTask/index/watchVideo",
+        json: _0x15cc23
+      };
+      let {
+          result: _0x3d06a2,
+          statusCode: _0xa801d9
+        } = await this.request(_0x61e8d7),
+        _0x33f743 = _0x49dfef.get(_0x3d06a2, "code", -1);
+      if (_0x33f743 == 0) {
+        this.log("\u89C2\u770B\u77ED\u89C6\u9891[" + _0x37b577 + "]\u6210\u529F");
+      } else {
+        let _0x597186 = _0x3d06a2?.["msg"] || _0x3d06a2?.["resoultMsg"] || _0x3d06a2?.["error"] || _0x3d06a2?.["msg"] || "";
+        this.log("\u89C2\u770B\u77ED\u89C6\u9891[" + _0x37b577 + "]\u5931\u8D25[" + _0x33f743 + "]: " + _0x597186);
+      }
+    } catch (_0x42a411) {
+      console.log(_0x42a411);
+    }
+  }
+  async like(_0x3605f0, _0x42d468 = {}) {
+    try {
+      const _0x551814 = {
+        account: this.name,
+        liveId: _0x3605f0
+      };
+      const _0x3fd3b3 = {
+        fn: "like",
+        method: "post",
+        url: "https://xbk.189.cn/xbkapi/lteration/room/like",
+        json: _0x551814
+      };
+      let {
+          result: _0x15cd63,
+          statusCode: _0x550c11
+        } = await this.request(_0x3fd3b3),
+        _0x3cb60d = _0x49dfef.get(_0x15cd63, "code", -1);
+      if (_0x3cb60d == 0) {
+        this.log("\u70B9\u8D5E\u76F4\u64AD\u95F4[" + _0x3605f0 + "]\u6210\u529F");
+      } else {
+        let _0x12573c = _0x15cd63?.["msg"] || _0x15cd63?.["resoultMsg"] || _0x15cd63?.["error"] || _0x15cd63?.["msg"] || "";
+        this.log("\u70B9\u8D5E\u76F4\u64AD\u95F4[" + _0x3605f0 + "]\u5931\u8D25[" + _0x3cb60d + "]: " + _0x12573c);
+      }
+    } catch (_0x33a0d8) {
+      console.log(_0x33a0d8);
+    }
+  }
+  async sharingGetGold(_0x5cc2cd = {}) {
+    try {
+      let _0x5957b6 = {
+          fn: "sharingGetGold",
+          method: "post",
+          url: "https://appfuwu.189.cn:9021/query/sharingGetGold",
+          json: {
+            headerInfos: {
+              code: "sharingGetGold",
+              timestamp: _0x49dfef.time("yyyyMMddhhmmss"),
+              broadAccount: "",
+              broadToken: "",
+              clientType: "#9.6.1#channel50#iPhone 14 Pro Max#",
+              shopId: "20002",
+              source: "110003",
+              sourcePassword: "Sid98s",
+              token: this.token,
+              userLoginName: this.name
+            },
+            content: {
+              attach: "test",
+              fieldData: {
+                shareSource: "3",
+                userId: this.userId,
+                account: this.encode_phone()
+              }
+            }
+          }
+        },
+        {
+          result: _0x36023a,
+          statusCode: _0x5ade7c
+        } = await this.request(_0x5957b6),
+        _0x3bb612 = _0x49dfef.get(_0x36023a?.["responseData"], "resultCode", -1);
+      if (_0x3bb612 == "0000") {
+        this.log("\u5206\u4EAB\u6210\u529F");
+      } else {
+        let _0x1fc39a = _0x36023a?.["msg"] || _0x36023a?.["responseData"]?.["resultDesc"] || _0x36023a?.["error"] || _0x36023a?.["msg"] || "";
+        this.log("\u5206\u4EAB\u5931\u8D25[" + _0x3bb612 + "]: " + _0x1fc39a);
+      }
+    } catch (_0x221821) {
+      console.log(_0x221821);
+    }
+  }
+  async month_jml_preCost(_0x3e12ef = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      let _0x54e4a2 = {
+          fn: "month_jml_preCost",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/short/message/preCost",
+          json: {
+            phone: this.encode_aes(this.name),
+            activityCode: "shortMesssge"
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x19ae9b,
+          statusCode: _0x219a77
+        } = await this.request(_0x54e4a2),
+        _0xb89634 = _0x49dfef.get(_0x19ae9b, "resoultCode", _0x219a77);
+      if (_0xb89634 == 0) {
+        let _0x1709f5 = _0x19ae9b?.["data"]?.["resoultMsg"] || "\u9886\u53D6\u6210\u529F";
+        this.jml_tokenFlag = _0x19ae9b?.["resoultMsg"];
+        await this.month_jml_userCost(_0x1709f5);
+        await this.month_jml_receive();
+        await this.month_jml_getCount();
+        await this.month_jml_refresh();
+      } else {
+        let _0x2dde86 = _0x19ae9b?.["msg"] || _0x19ae9b?.["resoultMsg"] || _0x19ae9b?.["error"] || "";
+        this.log("\u6BCF\u6708\u89C1\u9762\u793C\u767B\u5F55\u5931\u8D25[" + _0xb89634 + "]: " + _0x2dde86);
+      }
+    } catch (_0xf5ea71) {
+      console.log(_0xf5ea71);
+    }
+  }
+  async month_jml_userCost(_0x5b6d73, _0x434031 = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      let _0x223f5d = {
+          fn: "month_jml_userCost",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/short/message/userCost",
+          json: {
+            phone: this.encode_aes(this.name),
+            activityCode: "shortMesssge",
+            flag: this.jml_tokenFlag
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x2add96,
+          statusCode: _0x4c7beb
+        } = await this.request(_0x223f5d),
+        _0x55ebaa = _0x49dfef.get(_0x2add96, "resoultCode", _0x4c7beb);
+      if (_0x55ebaa == 0) {
+        let _0x39f674 = _0x2add96?.["data"]?.["map"](_0x475613 => "[" + _0x475613.pizeName + "]") || [];
+        this.log("\u89C1\u9762\u793C" + _0x5b6d73 + ": " + _0x39f674.join(", "));
+      } else {
+        let _0x1c5716 = _0x2add96?.["msg"] || _0x2add96?.["resoultMsg"] || _0x2add96?.["error"] || "";
+        this.log("\u9886\u53D6\u6BCF\u6708\u89C1\u9762\u793C\u5931\u8D25[" + _0x55ebaa + "]: " + _0x1c5716);
+      }
+    } catch (_0x3eb9f8) {
+      console.log(_0x3eb9f8);
+    }
+  }
+  async month_jml_receive(_0x5aaffc = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x1a3146 = {
+        phone: this.name,
+        flag: this.jml_tokenFlag
+      };
+      let _0x4fe3a1 = {
+          fn: "month_jml_receive",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/lottery/receive",
+          json: {
+            para: this.encrypt_para(_0x1a3146)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x16a4a1,
+          statusCode: _0x389615
+        } = await this.request(_0x4fe3a1),
+        _0x4924bc = _0x49dfef.get(_0x16a4a1, "code", -1);
+      if (_0x4924bc == 0) {
+        this.log("\u9886\u53D6APP\u62BD\u5956\u6B21\u6570\u6210\u529F");
+      } else {
+        let _0x5ef8a4 = _0x16a4a1?.["msg"] || _0x16a4a1?.["resoultMsg"] || _0x16a4a1?.["error"] || "";
+        this.log("\u9886\u53D6APP\u62BD\u5956\u6B21\u6570\u5931\u8D25[" + _0x4924bc + "]: " + _0x5ef8a4);
+      }
+    } catch (_0x209a71) {
+      console.log(_0x209a71);
+    }
+  }
+  async month_jml_getCount(_0x1eebce = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x3d70a3 = {
+        phone: this.name,
+        flag: this.jml_tokenFlag
+      };
+      let _0x1d2de9 = {
+          fn: "month_jml_getCount",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/lottery/getCount",
+          json: {
+            para: this.encrypt_para(_0x3d70a3)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0xf1b29a,
+          statusCode: _0x4204df
+        } = await this.request(_0x1d2de9),
+        _0x4704a8 = _0x49dfef.get(_0xf1b29a, "code", -1);
+      if (_0x4704a8 == 0) {
+        let _0x141535 = _0xf1b29a?.["video"]?.["map"](_0x33886d => _0x33886d.videoType) || [],
+          _0x2fb772 = _0x131d2d.filter(_0x5bb71b => !_0x141535.includes(_0x5bb71b)),
+          _0x22a4b1 = false;
+        for (let _0x38b1de of _0x2fb772) {
+          if (_0x22a4b1) {
+            let _0x296e0d = Math.floor(Math.random() * 5000) + 3000;
+            await _0x49dfef.wait(_0x296e0d);
+          }
+          await this.month_jml_addVideoCount(_0x38b1de);
+          _0x22a4b1 = true;
+        }
+      } else {
+        let _0x330a5e = _0xf1b29a?.["msg"] || _0xf1b29a?.["resoultMsg"] || _0xf1b29a?.["error"] || "";
+        this.log("\u67E5\u8BE2\u770B\u89C6\u9891\u5F97\u62BD\u5956\u673A\u4F1A\u6B21\u6570\u5931\u8D25[" + _0x4704a8 + "]: " + _0x330a5e);
+      }
+    } catch (_0x1c46ec) {
+      console.log(_0x1c46ec);
+    }
+  }
+  async month_jml_addVideoCount(_0x10070c, _0x588069 = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x723a = {
+        phone: this.name,
+        videoType: _0x10070c,
+        flag: this.jml_tokenFlag
+      };
+      let _0x2b00ee = {
+          fn: "month_jml_addVideoCount",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/lottery/addVideoCount",
+          json: {
+            para: this.encrypt_para(_0x723a)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x8dff4,
+          statusCode: _0x6fd216
+        } = await this.request(_0x2b00ee),
+        _0x3f6886 = _0x49dfef.get(_0x8dff4, "code", -1);
+      if (_0x3f6886 == 0) {
+        this.log("\u770B\u89C6\u9891[" + _0x10070c + "]\u5F97\u62BD\u5956\u673A\u4F1A\u6210\u529F");
+      } else {
+        let _0x238dbf = _0x8dff4?.["msg"] || _0x8dff4?.["resoultMsg"] || _0x8dff4?.["error"] || "";
+        this.log("\u770B\u89C6\u9891[" + _0x10070c + "]\u5F97\u62BD\u5956\u673A\u4F1A\u5931\u8D25[" + _0x3f6886 + "]: " + _0x238dbf);
+      }
+    } catch (_0x2d129d) {
+      console.log(_0x2d129d);
+    }
+  }
+  async month_jml_refresh(_0xcca85f = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x551b86 = {
+        phone: this.name,
+        flag: this.jml_tokenFlag
+      };
+      let _0x5ab84e = {
+          fn: "month_jml_refresh",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/lottery/refresh",
+          json: {
+            para: this.encrypt_para(_0x551b86)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x764f77,
+          statusCode: _0x2cc71c
+        } = await this.request(_0x5ab84e),
+        _0x5ecd1e = _0x49dfef.get(_0x764f77, "code", -1);
+      if (_0x5ecd1e == -1) {
+        let _0x58362e = _0x764f77?.["rNumber"] || 0;
+        this.log("\u53EF\u4EE5\u62BD\u5956" + _0x58362e + "\u6B21");
+        let _0x31275f = false;
+        while (_0x58362e-- > 0) {
+          if (_0x31275f) {
+            let _0x33dd5d = Math.floor(Math.random() * 5000) + 3000;
+            await _0x49dfef.wait(_0x33dd5d);
+          }
+          await this.month_jml_lotteryRevice();
+          _0x31275f = true;
+        }
+      } else {
+        let _0x15024f = _0x764f77?.["msg"] || _0x764f77?.["resoultMsg"] || _0x764f77?.["error"] || "";
+        this.log("\u67E5\u8BE2\u62BD\u5956\u6B21\u6570\u5931\u8D25[" + _0x5ecd1e + "]: " + _0x15024f);
+      }
+    } catch (_0x14d546) {
+      console.log(_0x14d546);
+    }
+  }
+  async month_jml_lotteryRevice(_0x5bf2d6 = {}) {
+    const cookies = await this.firstRequest();
+    try {
+      const _0x786d14 = {
+        phone: this.name,
+        flag: this.jml_tokenFlag
+      };
+      let _0x57d2e2 = {
+          fn: "month_jml_lotteryRevice",
+          method: "post",
+          url: "https://wapside.189.cn:9001/jt-sign/lottery/lotteryRevice",
+          json: {
+            para: this.encrypt_para(_0x786d14)
+          },
+          headers: {
+            Cookie: cookies
+          }
+        },
+        {
+          result: _0x361574,
+          statusCode: _0x1225b9
+        } = await this.request(_0x57d2e2),
+        _0x4ec03c = _0x49dfef.get(_0x361574, "code", -1);
+      if (_0x4ec03c == 0) {
+        let {
+          rname: _0x232c3b,
+          id: _0x23684c
+        } = _0x361574;
+        const _0x16b601 = {
+          notify: true
+        };
+        this.log("\u6BCF\u6708\u89C1\u9762\u793C\u62BD\u5956: " + _0x232c3b, _0x16b601);
+      } else {
+        let _0x97a723 = _0x361574?.["msg"] || _0x361574?.["resoultMsg"] || _0x361574?.["error"] || "";
+        this.log("\u6BCF\u6708\u89C1\u9762\u793C\u62BD\u5956\u5931\u8D25[" + _0x4ec03c + "]: " + _0x97a723);
+      }
+    } catch (_0x3b1aef) {
+      console.log(_0x3b1aef);
+    }
+  }
+  async rpc_request(_0x390ce7, _0x48b512 = "get", _0x46e01b = null) {
+    const _0x433f30 = new Error(),
+      _0xafbbac = _0x433f30.stack,
+      _0x27601e = _0xafbbac.split("\n"),
+      _0x17aebc = _0x27601e?.[2]?.["match"](/UserClass\.(\w+)/)?.[1] || "rpc";
+    let _0x50ab7c = {
+      fn: _0x17aebc,
+      method: "post",
+      url: _0x16d3ea,
+      json: {
+        key: _0x344953,
+        method: _0x48b512,
+        url: _0x390ce7.toString(),
+        headers: this.get_mall_headers(),
+        data: JSON.stringify(_0x46e01b)
+      }
+    };
+    return await this.request(_0x50ab7c);
+  }
+  async auth_login(_0x16dd5f = {}) {
+    let _0x4b632d = false;
+    try {
+      let _0x59ca25 = this.ticket,
+        _0xa64474 = new URL("https://wapact.189.cn:9001/unified/user/login"),
+        _0x28641d = {
+          ticket: _0x59ca25,
+          backUrl: encodeURIComponent("https://wapact.189.cn:9001/JinDouMall/JinDouMall_luckDraw.html?ticket=" + _0x59ca25),
+          platformCode: "P201010301",
+          loginType: 2
+        },
+        {
+          result: _0x16b3c5,
+          statusCode: _0x3b6fb9
+        } = await this.rpc_request(_0xa64474, "POST", _0x28641d),
+        _0x25f5c8 = _0x49dfef.get(_0x16b3c5, "code", _0x3b6fb9);
+      if (_0x25f5c8 == 0) {
+        let {
+          token: _0x202a28,
+          sessionId: _0x274600
+        } = _0x16b3c5?.["biz"];
+        this.mall_token = _0x202a28;
+        _0x4b632d = true;
+      } else {
+        let _0x1c4e69 = _0x49dfef.get(_0x16b3c5, "message", "");
+        this.log("\u5546\u57CE\u767B\u5F55\u5931\u8D25[" + _0x25f5c8 + "]: " + _0x1c4e69);
+      }
+    } catch (_0x3b74e2) {
+      console.log(_0x3b74e2);
+    } finally {
+      return _0x4b632d;
+    }
+  }
+  async queryInfo(_0x3da8a0 = {}) {
+    try {
+      let _0xc5f478 = new URL("https://wapact.189.cn:9001/gateway/golden/api/queryInfo");
+      _0xc5f478.searchParams.append("_", Date.now().toString());
+      let {
+          result: _0x3bab08,
+          statusCode: _0x42dda4
+        } = await this.rpc_request(_0xc5f478),
+        _0x69d0a7 = _0x49dfef.get(_0x3bab08, "code", _0x42dda4);
+      if (_0x69d0a7 == 0) {
+        this.coin = _0x3bab08?.["biz"]?.["amountTotal"] || this.coin;
+        await this.queryTurnTable();
+      } else {
+        let _0x401a81 = _0x49dfef.get(_0x3bab08, "message", "");
+        this.log("\u67E5\u8BE2\u5546\u57CE\u72B6\u6001\u5931\u8D25[" + _0x69d0a7 + "]: " + _0x401a81);
+      }
+    } catch (_0xd507ac) {
+      console.log(_0xd507ac);
+    }
+  }
+  async queryTurnTable(_0x12dce0 = {}) {
+    try {
+      let _0x5dccd4 = new URL("https://wapact.189.cn:9001/gateway/golden/api/queryTurnTable");
+      _0x5dccd4.searchParams.append("userType", "1");
+      _0x5dccd4.searchParams.append("_", Date.now().toString());
+      let {
+          result: _0x2ad2d5,
+          statusCode: _0x5a8d92
+        } = await this.rpc_request(_0x5dccd4),
+        _0x2b1c98 = _0x49dfef.get(_0x2ad2d5, "code", _0x5a8d92);
+      if (_0x2b1c98 == 0) {
+        let _0x2b2dfc = _0x2ad2d5?.["biz"]?.["xiaoHaoCount"] || 20,
+          _0x15becc = _0x2ad2d5?.["biz"]?.["wzTurntable"]?.["code"] || "";
+        _0x15becc ? await this.lottery_check(_0x15becc, _0x2b2dfc) : this.log("\u6CA1\u6709\u83B7\u53D6\u5230\u8F6C\u76D8\u62BD\u5956ID");
+      } else {
+        let _0x96a1c8 = _0x49dfef.get(_0x2ad2d5, "message", "");
+        this.log("\u83B7\u53D6\u8F6C\u76D8\u62BD\u5956\u6D3B\u52A8\u5931\u8D25[" + _0x2b1c98 + "]: " + _0x96a1c8);
+      }
+    } catch (_0x3408eb) {
+      console.log(_0x3408eb);
+    }
+  }
+  async lottery_check(_0x217d19, _0x372f7b, _0x4f6c97 = {}) {
+    try {
+      let _0xa49a58 = new URL("https://wapact.189.cn:9001/gateway/stand/detail/check");
+      _0xa49a58.searchParams.append("activityId", _0x217d19);
+      _0xa49a58.searchParams.append("_", Date.now().toString());
+      let {
+          result: _0x2d69c8,
+          statusCode: _0x242328
+        } = await this.rpc_request(_0xa49a58),
+        _0x2cccad = _0x49dfef.get(_0x2d69c8, "code", _0x242328);
+      if (_0x2cccad == 0) {
+        let _0x157881 = _0x2d69c8?.["biz"]?.["resultInfo"]?.["chanceCount"] || 0;
+        this.log("\u8F6C\u76D8\u53EF\u4EE5\u62BD\u5956" + _0x157881 + "\u6B21, \u6D88\u8017\u91D1\u8C46" + _0x372f7b + "/" + this.coin);
+        let _0x30a5ac = false;
+        while (_0x157881-- > 0 && this.coin >= _0x372f7b) {
+          if (_0x30a5ac) {
+            await _0x49dfef.wait(3000);
+          }
+          _0x30a5ac = true;
+          await this.lottery_do(_0x217d19, _0x372f7b);
+        }
+      } else {
+        let _0x3cd934 = _0x49dfef.get(_0x2d69c8, "message", "");
+        this.log("\u67E5\u8BE2\u8F6C\u76D8\u62BD\u5956\u6B21\u6570\u5931\u8D25[" + _0x2cccad + "]: " + _0x3cd934);
+      }
+    } catch (_0x957f54) {
+      console.log(_0x957f54);
+    }
+  }
+  async lottery_do(_0x5149a7, _0xc5a8fd = {}) {
+    try {
+      let _0x1794f8 = new URL("https://wapact.189.cn:9001/gateway/golden/api/lottery");
+      const _0x5e6ddf = {
+        activityId: _0x5149a7
+      };
+      let {
+          result: _0x50d02f,
+          statusCode: _0x69dd47
+        } = await this.rpc_request(_0x1794f8, "POST", _0x5e6ddf),
+        _0x301247 = _0x49dfef.get(_0x50d02f, "code", _0x69dd47);
+      if (_0x301247 == 0) {
+        this.coin = _0x50d02f?.["biz"]?.["amountTotal"] || this.coin - xiaoHaoCount;
+        let _0x3d75c1 = _0x50d02f?.["biz"]?.["resultCode"],
+          _0x2f6e42 = "";
+        switch (_0x3d75c1) {
+          case "0":
+            {
+              let _0x420d18 = _0x50d02f?.["biz"]?.["resultInfo"]?.["winTitle"] || "\u7A7A\u6C14";
+              const _0x580cdf = {
+                notify: true
+              };
+              this.log("\u8F6C\u76D8\u62BD\u5956: " + _0x420d18, _0x580cdf);
+              return;
+            }
+          case "412":
+            {
+              _0x2f6e42 = "\u62BD\u5956\u6B21\u6570\u5DF2\u8FBE\u4E0A\u9650";
+              break;
+            }
+          case "413":
+          case "420":
+            {
+              _0x2f6e42 = "\u91D1\u8C46\u4E0D\u8DB3";
+              break;
+            }
+          default:
+            {
+              this.log(": " + JSON.stringify(_0x50d02f));
+              _0x2f6e42 = "\u672A\u77E5\u539F\u56E0";
+              break;
+            }
+        }
+        this.log("\u8F6C\u76D8\u62BD\u5956\u5931\u8D25[" + _0x3d75c1 + "]: " + _0x2f6e42);
+      } else {
+        let _0x1e463b = _0x49dfef.get(_0x50d02f, "message", "");
+        this.log("\u8F6C\u76D8\u62BD\u5956\u9519\u8BEF[" + _0x301247 + "]: " + _0x1e463b);
+      }
+    } catch (_0x3f560e) {
+      console.log(_0x3f560e);
+    }
+  }
+  async userTask() {
+    // 创建日志数组来存储该账号的所有日志
+    this.logs = [];
+
+    // 添加账号分隔行
+    this.logs.push("\n======== \u8D26\u53F7[" + this.index + "] \u65E5\u5FD7 ========");
+
+    // 修改原有的log方法,改为存储日志
+    this.log = (msg, options = {}) => {
+      // 获取当前时间
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+      const timestamp = `${hours}:${minutes}:${seconds}`;
+      const logMsg = `账号[${this.index}] ${msg}`;
+
+      // 存储日志
+      this.logs.push(logMsg);
+
+      // 实时显示日志
+      console.log(logMsg);
+
+      // 如果需要通知,则添加到通知字符串
+      if (options.notify) {
+        _0x49dfef.notifyStr.push(logMsg);
+      }
+    };
+    const _0x4d55e5 = {
+      notify: true
+    };
+    _0x49dfef.log("\n======= \u8D26\u53F7[" + this.index + "][" + this.name + "] =======", _0x4d55e5);
+    if (!this.load_token() && !(await this.login())) {
+      return;
+    }
+    if (!(await this.get_ticket())) {
+      return;
+    }
+    if (!(await this.get_sign())) {
+      return;
+    }
+    await this.userCoinInfo();
+    await this.getLevelRightsList();
+    await this.month_jml_preCost();
+    await this.userStatusInfo();
+    await this.continueSignRecords();
+    await this.homepage("hg_qd_zrwzjd");
+    await this.getParadiseInfo();
+    if (_0x16d3ea) {
+      await this.userLotteryTask();
+    }
+    await this.userCoinInfo(true);
+
+    // 添加分隔行
+    this.logs.push("========== \u8D26\u53F7[" + this.index + "] \u65E5\u5FD7\u7ED3\u675F ==========\n");
+
+    // 标记任务已完成
+    this.taskCompleted = true;
+  }
+  async userLotteryTask() {
+    if (!(await this.auth_login())) {
+      return;
+    }
+    await this.queryInfo();
+  }
+}
+!(async () => {
+  if (!(await _0x1a2249())) {
+    return;
+  }
+  _0x49dfef.read_env(_0x3f433d);
+  _0xa0ff1b();
+  for (let user of _0x49dfef.userList) {
+    await user.userTask();
+  }
+  await _0x49dfef.showmsg();
+  let endTime = Date.now(),
+    duration = (endTime - _0x49dfef.startTime) / 1000;
+  console.log(`\n[${_0x49dfef.name}]运行结束，共运行了${duration}秒`);
+  process.exit(0);
+})().catch(e => console.log(e)).finally(() => _0x49dfef.exitNow());
+async function _0x1a2249(_0x5dcebe = 0) {
+  let _0x40b7b = [];
+  try {
+    const _0x14929e = {
+      fn: "auth",
+      method: "get",
+      url: _0x100b57,
+      timeout: 20000
+    };
+    let {
+      statusCode: _0xbb1bc5,
+      result: _0x508782
+    } = await _0x3b1630.request(_0x14929e);
+    if (_0xbb1bc5 != 200) {
+      _0x5dcebe++ < _0x3c685e && (_0x40b7b = await _0x1a2249(_0x5dcebe));
+      return _0x40b7b;
+    }
+    if (_0x508782?.["code"] == 0) {
+      _0x508782 = JSON.parse(_0x508782.data.file.data);
+      if (_0x508782?.["commonNotify"] && _0x508782.commonNotify.length > 0) {
+        const _0x1a6c76 = {
+          notify: true
+        };
+        _0x49dfef.log(_0x508782.commonNotify.join("\n") + "\n", _0x1a6c76);
+      }
+      _0x508782?.["commonMsg"] && _0x508782.commonMsg.length > 0 && _0x49dfef.log(_0x508782.commonMsg.join("\n") + "\n");
+      if (_0x508782[_0x14f289]) {
+        let _0x145844 = _0x508782[_0x14f289];
+        _0x145844.status == 0 ? _0xf4231c >= _0x145844.version ? (_0x40b7b = [], _0x49dfef.log(_0x145844.msg[_0x145844.status]), _0x49dfef.log(_0x145844.updateMsg), _0x49dfef.log("\u73B0\u5728\u8FD0\u884C\u7684\u811A\u672C\u7248\u672C\u662F\uFF1A" + _0xf4231c + "\uFF0C\u6700\u65B0\u811A\u672C\u7248\u672C\uFF1A" + _0x145844.latestVersion)) : _0x49dfef.log(_0x145844.versionMsg) : _0x49dfef.log(_0x145844.msg[_0x145844.status]);
+      } else {
+        _0x49dfef.log(_0x508782.errorMsg);
+      }
+    } else {
+      _0x5dcebe++ < _0x3c685e && (_0x40b7b = await _0x1a2249(_0x5dcebe));
+    }
+  } catch (_0x458d78) {
+    _0x49dfef.log(_0x458d78);
+  } finally {
+    return _0x40b7b;
+  }
+}
+function _0x5370a4(_0x24412c) {
+  return new class {
+    constructor(_0x198bc4) {
+      this.name = _0x198bc4;
+      this.startTime = Date.now();
+      const _0x555858 = {
+        time: true
+      };
+      this.log("[" + this.name + "]\u5F00\u59CB\u8FD0\u884C\n", _0x555858);
+      this.notifyStr = [];
+      this.notifyFlag = true;
+      this.userIdx = 0;
+      this.userList = [];
+      this.userCount = 0;
+      this.default_timestamp_len = 13;
+      this.default_wait_interval = 1000;
+      this.default_wait_limit = 3600000;
+      this.default_wait_ahead = 0;
+    }
+    log(_0x25f67c, _0x45847d = {}) {
+      const _0x82b0fc = {
+        console: true
+      };
+      Object.assign(_0x82b0fc, _0x45847d);
+      if (_0x82b0fc.time) {
+        let _0x58f096 = _0x82b0fc.fmt || "hh:mm:ss";
+        _0x25f67c = "[" + this.time(_0x58f096) + "]" + _0x25f67c;
+      }
+      if (_0x82b0fc.notify) {
+        this.notifyStr.push(_0x25f67c);
+      }
+      if (_0x82b0fc.console) {
+        console.log(_0x25f67c);
       }
     }
-    log(...t) {
-      t.length > 0 && (this.logs = [...this.logs, ...t]), console.log(t.join(this.logSeparator));
+    get(_0x2ecf4d, _0x5800fb, _0x1ff76e = "") {
+      let _0x5a663b = _0x1ff76e;
+      _0x2ecf4d?.["hasOwnProperty"](_0x5800fb) && (_0x5a663b = _0x2ecf4d[_0x5800fb]);
+      return _0x5a663b;
     }
-    logErr(t, e) {
-      const s = !this.isSurge() && !this.isQuanX() && !this.isLoon();
-      s ? this.log("", `❗️${this.name}, 错误!`, t.stack) : this.log("", `❗️${this.name}, 错误!`, t);
+    pop(_0x2ae8ec, _0xbb54f6, _0x9c8563 = "") {
+      let _0x213044 = _0x9c8563;
+      _0x2ae8ec?.["hasOwnProperty"](_0xbb54f6) && (_0x213044 = _0x2ae8ec[_0xbb54f6], delete _0x2ae8ec[_0xbb54f6]);
+      return _0x213044;
     }
-    wait(t) {
-      return new Promise(e => setTimeout(e, t));
+    copy(_0x1fbe5b) {
+      return Object.assign({}, _0x1fbe5b);
     }
-    done(t = {}) {
-      const e = new Date().getTime(),
-        s = (e - this.startTime) / 1000;
-      this.log("", `🔔${this.name}, 结束! 🕛 ${s} 秒`), this.log(), (this.isSurge() || this.isQuanX() || this.isLoon()) && $done(t);
+    read_env(_0x412e83) {
+      let _0x1267c5 = _0x4aec53.map(_0x166c56 => process.env[_0x166c56]);
+      for (let _0x2b0da2 of _0x1267c5.filter(_0x22b120 => !!_0x22b120)) {
+        for (let _0x4465a3 of _0x2b0da2.split(_0x1876a7).filter(_0x3c7dca => !!_0x3c7dca)) {
+          if (this.userList.includes(_0x4465a3)) {
+            continue;
+          }
+          this.userList.push(new _0x412e83(_0x4465a3));
+        }
+      }
+      this.userCount = this.userList.length;
+      if (!this.userCount) {
+        const _0x3d5d5 = {
+          notify: true
+        };
+        this.log("\u672A\u627E\u5230\u53D8\u91CF\uFF0C\u8BF7\u68C0\u67E5\u53D8\u91CF" + _0x4aec53.map(_0x56423f => "[" + _0x56423f + "]").join("\u6216"), _0x3d5d5);
+        return false;
+      }
+      this.log("\u5171\u627E\u5230" + this.userCount + "\u4E2A\u8D26\u53F7");
+      return true;
     }
-  }(t, e);
+    time(_0x43e381, _0x1822e0 = null) {
+      let _0x1de2f7 = _0x1822e0 ? new Date(_0x1822e0) : new Date(),
+        _0x180e96 = {
+          "M+": _0x1de2f7.getMonth() + 1,
+          "d+": _0x1de2f7.getDate(),
+          "h+": _0x1de2f7.getHours(),
+          "m+": _0x1de2f7.getMinutes(),
+          "s+": _0x1de2f7.getSeconds(),
+          "q+": Math.floor((_0x1de2f7.getMonth() + 3) / 3),
+          S: this.padStr(_0x1de2f7.getMilliseconds(), 3)
+        };
+      /(y+)/.test(_0x43e381) && (_0x43e381 = _0x43e381.replace(RegExp.$1, (_0x1de2f7.getFullYear() + "").substr(4 - RegExp.$1.length)));
+      for (let _0x2cfbd9 in _0x180e96) new RegExp("(" + _0x2cfbd9 + ")").test(_0x43e381) && (_0x43e381 = _0x43e381.replace(RegExp.$1, 1 == RegExp.$1.length ? _0x180e96[_0x2cfbd9] : ("00" + _0x180e96[_0x2cfbd9]).substr(("" + _0x180e96[_0x2cfbd9]).length)));
+      return _0x43e381;
+    }
+    async showmsg() {
+      if (!this.notifyFlag) {
+        return;
+      }
+      if (!this.notifyStr.length) {
+        return;
+      }
+      var _0x2264e = require("./sendNotify");
+      this.log("\n============== \u63A8\u9001 ==============");
+      await _0x2264e.sendNotify(this.name, this.notifyStr.join("\n"));
+    }
+    padStr(_0x397014, _0x4fcca2, _0x1abd3c = {}) {
+      let _0x10354b = _0x1abd3c.padding || "0",
+        _0x39ed4e = _0x1abd3c.mode || "l",
+        _0x3b33af = String(_0x397014),
+        _0x26e87b = _0x4fcca2 > _0x3b33af.length ? _0x4fcca2 - _0x3b33af.length : 0,
+        _0x3bb60f = "";
+      for (let _0x30ac41 = 0; _0x30ac41 < _0x26e87b; _0x30ac41++) {
+        _0x3bb60f += _0x10354b;
+      }
+      _0x39ed4e == "r" ? _0x3b33af = _0x3b33af + _0x3bb60f : _0x3b33af = _0x3bb60f + _0x3b33af;
+      return _0x3b33af;
+    }
+    json2str(_0x123637, _0x402c90, _0x46e6c5 = false) {
+      let _0x75d972 = [];
+      for (let _0x2a0f42 of Object.keys(_0x123637).sort()) {
+        let _0x2bc1ca = _0x123637[_0x2a0f42];
+        if (_0x2bc1ca && _0x46e6c5) {
+          _0x2bc1ca = encodeURIComponent(_0x2bc1ca);
+        }
+        _0x75d972.push(_0x2a0f42 + "=" + _0x2bc1ca);
+      }
+      return _0x75d972.join(_0x402c90);
+    }
+    str2json(_0x32e5fc, _0x43a064 = false) {
+      let _0x4cd4ad = {};
+      for (let _0x520529 of _0x32e5fc.split("&")) {
+        if (!_0x520529) {
+          continue;
+        }
+        let _0x1dc4e6 = _0x520529.indexOf("=");
+        if (_0x1dc4e6 == -1) {
+          continue;
+        }
+        let _0x4998d0 = _0x520529.substr(0, _0x1dc4e6),
+          _0x3ac012 = _0x520529.substr(_0x1dc4e6 + 1);
+        if (_0x43a064) {
+          _0x3ac012 = decodeURIComponent(_0x3ac012);
+        }
+        _0x4cd4ad[_0x4998d0] = _0x3ac012;
+      }
+      return _0x4cd4ad;
+    }
+    randomPattern(_0x369f7e, _0x4006d8 = "abcdef0123456789") {
+      let _0x3140cf = "";
+      for (let _0x8e9314 of _0x369f7e) {
+        if (_0x8e9314 == "x") {
+          _0x3140cf += _0x4006d8.charAt(Math.floor(Math.random() * _0x4006d8.length));
+        } else {
+          _0x8e9314 == "X" ? _0x3140cf += _0x4006d8.charAt(Math.floor(Math.random() * _0x4006d8.length)).toUpperCase() : _0x3140cf += _0x8e9314;
+        }
+      }
+      return _0x3140cf;
+    }
+    randomUuid() {
+      return this.randomPattern("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+    }
+    randomString(_0x33254d, _0x5f4306 = "abcdef0123456789") {
+      let _0x440af6 = "";
+      for (let _0x475f61 = 0; _0x475f61 < _0x33254d; _0x475f61++) {
+        _0x440af6 += _0x5f4306.charAt(Math.floor(Math.random() * _0x5f4306.length));
+      }
+      return _0x440af6;
+    }
+    randomList(_0x4242c3) {
+      let _0x35c76e = Math.floor(Math.random() * _0x4242c3.length);
+      return _0x4242c3[_0x35c76e];
+    }
+    wait(_0x1dc9b5) {
+      return new Promise(_0x54d822 => setTimeout(_0x54d822, _0x1dc9b5));
+    }
+    async exitNow() {
+      await this.showmsg();
+      let _0x4210ea = Date.now(),
+        _0x52abd1 = (_0x4210ea - this.startTime) / 1000;
+      this.log("");
+      const _0x4bb8d6 = {
+        time: true
+      };
+      this.log("[" + this.name + "]\u8FD0\u884C\u7ED3\u675F\uFF0C\u5171\u8FD0\u884C\u4E86" + _0x52abd1 + "\u79D2", _0x4bb8d6);
+      process.exit(0);
+    }
+    normalize_time(_0x2e4fd9, _0x6f3e21 = {}) {
+      let _0x2a3018 = _0x6f3e21.len || this.default_timestamp_len;
+      _0x2e4fd9 = _0x2e4fd9.toString();
+      let _0x54eeae = _0x2e4fd9.length;
+      while (_0x54eeae < _0x2a3018) {
+        _0x2e4fd9 += "0";
+      }
+      _0x54eeae > _0x2a3018 && (_0x2e4fd9 = _0x2e4fd9.slice(0, 13));
+      return parseInt(_0x2e4fd9);
+    }
+    async wait_until(_0x3145a4, _0x3938d8 = {}) {
+      let _0x155654 = _0x3938d8.logger || this,
+        _0x808a8f = _0x3938d8.interval || this.default_wait_interval,
+        _0x1929a1 = _0x3938d8.limit || this.default_wait_limit,
+        _0x4fa992 = _0x3938d8.ahead || this.default_wait_ahead;
+      if (typeof _0x3145a4 == "string" && _0x3145a4.includes(":")) {
+        if (_0x3145a4.includes("-")) {
+          _0x3145a4 = new Date(_0x3145a4).getTime();
+        } else {
+          let _0xbcf425 = this.time("yyyy-MM-dd ");
+          _0x3145a4 = new Date(_0xbcf425 + _0x3145a4).getTime();
+        }
+      }
+      let _0x44ad11 = this.normalize_time(_0x3145a4) - _0x4fa992,
+        _0x213d55 = this.time("hh:mm:ss.S", _0x44ad11),
+        _0x64f4d7 = Date.now();
+      _0x64f4d7 > _0x44ad11 && (_0x44ad11 += 86400000);
+      let _0x539462 = _0x44ad11 - _0x64f4d7;
+      if (_0x539462 > _0x1929a1) {
+        const _0x533822 = {
+          time: true
+        };
+        _0x155654.log("\u79BB\u76EE\u6807\u65F6\u95F4[" + _0x213d55 + "]\u5927\u4E8E" + _0x1929a1 / 1000 + "\u79D2,\u4E0D\u7B49\u5F85", _0x533822);
+      } else {
+        const _0x436e20 = {
+          time: true
+        };
+        _0x155654.log("\u79BB\u76EE\u6807\u65F6\u95F4[" + _0x213d55 + "]\u8FD8\u6709" + _0x539462 / 1000 + "\u79D2,\u5F00\u59CB\u7B49\u5F85", _0x436e20);
+        while (_0x539462 > 0) {
+          let _0x5a2288 = Math.min(_0x539462, _0x808a8f);
+          await this.wait(_0x5a2288);
+          _0x64f4d7 = Date.now();
+          _0x539462 = _0x44ad11 - _0x64f4d7;
+        }
+        const _0x179ceb = {
+          time: true
+        };
+        _0x155654.log("\u5DF2\u5B8C\u6210\u7B49\u5F85", _0x179ceb);
+      }
+    }
+    async wait_gap_interval(_0x5caf3a, _0x373b08) {
+      let _0x5561b7 = Date.now() - _0x5caf3a;
+      _0x5561b7 < _0x373b08 && (await this.wait(_0x373b08 - _0x5561b7));
+    }
+  }(_0x24412c);
 }
